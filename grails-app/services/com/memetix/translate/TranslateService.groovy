@@ -146,13 +146,31 @@ class TranslateService {
      */
     def detect(originText) {
         log.debug("Executing TranslationService.detect(${originText}")
+        def detectedLanguage
+        
+        //If caching, then try to fetch from the Detect cache
+        if(maxDCacheSize>=0) {
+            log.debug("Fetching LanguageDetect from Cache")
+            detectedLanguage = dCache.get(originText.toString())
+            //if it is in the cache, then send it on back
+            if(detectedLanguage) {
+                log.debug("Returning Cached LanguageDetect")
+                return detectedLanguage.language?.toString()
+            }
+        }
         // Set the HTTP referrer to your website address.
         Detect.setHttpReferrer(httpReferrer);
         // If app has set translate.google.apiKey, then by all means, use it
         if(apiKey)
             Detect.setKey(apiKey)
             
-        def detectedLanguage = Detect.execute(originText)
+        detectedLanguage = Detect.execute(originText)
+        
+        //If caching, then store in the Detect cache
+        if(maxDCacheSize>=0) {
+            log.debug("Caching Language Detect")
+            dCache.put(originText.toString(),detectedLanguage)
+        }
         return detectedLanguage?.language?.toString()
     }
     
