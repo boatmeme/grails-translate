@@ -2,6 +2,6 @@
 *~
 *.swp
 grails-translate*.zip
-target/**/*
+target
 *.log
-web-app/WEB-INF/**/*
+WEB-INF
