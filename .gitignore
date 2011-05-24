@@ -4,3 +4,4 @@
 grails-translate*.zip
 target/**/*
 *.log
+web-app/WEB-INF/**/*
