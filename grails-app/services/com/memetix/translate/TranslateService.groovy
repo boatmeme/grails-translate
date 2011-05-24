@@ -1,9 +1,10 @@
-package com.memetix.translate
+package com.memetix.translate;
 
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
 import com.google.api.detect.Detect;
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import com.memetix.translate.LRUCache;
 
 /**
  * TranslateService
@@ -21,6 +22,10 @@ class TranslateService {
     static languageMap
     static httpReferrer = ConfigurationHolder?.config?.grails?.serverURL ?: 'http://localhost/translate'
     static apiKey = ConfigurationHolder?.config?.translate?.google?.apiKey
+    static maxTCacheSize = ConfigurationHolder?.config?.translate?.translation?.cache?.maxSize ?: 1000
+    static maxDCacheSize = ConfigurationHolder?.config?.translate?.detection?.cache?.maxSize ?: 1000
+    def tCache = new LRUCache(maxTCacheSize)
+    def dCache = new LRUCache(maxDCacheSize)
 
     /**
      * translate(originText,fromLang,toLang)                         
@@ -45,6 +50,7 @@ class TranslateService {
      */
     
     def translate(originText,fromLang,toLang) {
+        log.debug("Executing TranslationService.translate(${originText},${fromLang},${toLang})")
         def lFrom = Language.fromString(fromLang?.toString()?.toLowerCase())
         if(!lFrom) {
             throw new InvalidLanguageException( 
@@ -68,7 +74,18 @@ class TranslateService {
                 fromLanguage:fromLang.toString(),
                 toLanguage:toLang.toString())
         }
-            
+        def translatedText
+        // If the cache has been configured, try to fetch from it
+        if(maxTCacheSize>=0) {
+            log.debug("Fetching Translation from Cache")
+            translatedText = tCache.get(toLang.toString()+originText.toString())
+            //if it is in the cache, then send it on back
+            if(translatedText) {
+                log.debug("Returning Cached Translation")
+                return translatedText
+            }
+        }
+        
         // Set the HTTP referrer to your website address.
         Translate.setHttpReferrer(httpReferrer);
         
@@ -76,7 +93,13 @@ class TranslateService {
         if(apiKey)
             Translate.setKey(apiKey)
         //Run the translation
-        def translatedText = Translate.execute(originText,lFrom,lTo);
+        translatedText = Translate.execute(originText,lFrom,lTo);
+        
+        // If the cache has been configured, put into it
+        if(maxTCacheSize>=0&&translatedText) {
+            log.debug("Caching Translation")
+            tCache.put(toLang.toString()+originText.toString(),translatedText)
+        }
         return translatedText
     }
     
@@ -104,6 +127,7 @@ class TranslateService {
      */
     
     def translate(originText, toLang) {
+        log.debug("Executing TranslationService.translate(${originText},${toLang})")
         return translate(originText,Language.AUTO_DETECT,toLang)
     }
     
@@ -121,6 +145,7 @@ class TranslateService {
      * @since       0.1   2011.05.24   
      */
     def detect(originText) {
+        log.debug("Executing TranslationService.detect(${originText}")
         // Set the HTTP referrer to your website address.
         Detect.setHttpReferrer(httpReferrer);
         // If app has set translate.google.apiKey, then by all means, use it
@@ -147,7 +172,9 @@ class TranslateService {
      * @since       0.1   2011.05.24   
      */
     def getLanguages() {
+        log.debug("Executing TranslationService.getLanguages()")
         if(!languageMap) {
+            log.debug("Initializing getLanguages() language map")
             languageMap = new TreeMap()
             for(lang in Language?.values()) {
                 languageMap.put(lang.name(),lang.language)

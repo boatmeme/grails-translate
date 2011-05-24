@@ -2,17 +2,30 @@ package com.memetix.translate
 
 import grails.test.*
 import com.google.api.translate.Language;
+import org.apache.log4j.*
 
 class TranslateServiceTests extends GrailsUnitTestCase {
     def translateService
+     def log
     
     protected void setUp() {
         super.setUp()
+        setupLogger()
         translateService = new TranslateService()
     }
 
     protected void tearDown() {
         super.tearDown()
+    }
+    
+    private setupLogger() {
+        // build a logger...
+        BasicConfigurator.configure() 
+        LogManager.rootLogger.level = Level.DEBUG
+        log = LogManager.getLogger("TranslateService")
+
+        // use groovy metaClass to put the log into your class
+        TranslateService.class.metaClass.getLog << {-> log}
     }
 
     void testTranslateEnglishToFrench_Specific_Enum() {
