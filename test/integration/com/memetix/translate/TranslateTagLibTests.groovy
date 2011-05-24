@@ -13,10 +13,14 @@ class TranslateTagLibTests extends GroovyPagesTestCase  {
     }
 
     void testLanguageSelect() {
-        def template = applyTemplate("<translate:languageSelect name='languages'/>")
+        def template = applyTemplate("<translate:languageSelect name='languages' value='fr'/>")
+        println template
         assertTrue template?.contains('<select name="languages" >')
         assertTrue template?.contains('<option value="en">ENGLISH</option>')
+        assertTrue template?.contains('<option SELECTED value="fr">FRENCH</option>')
+        assertFalse template?.contains('<option value="">AUTO_DETECT</option>')
         assertTrue template?.contains('</select>')
+        
     }
     
     void testTranslateTextBodyToOnly() {
@@ -36,5 +40,9 @@ class TranslateTagLibTests extends GroovyPagesTestCase  {
     void testDetectLanguageEnglish() {
         def template = applyTemplate("<translate:detectLanguage text=\"This is an english phrase I would like translated\"/>")
         assertOutputEquals('ENGLISH',template)
+    }
+    void testGetLanguageName() {
+        def template = applyTemplate("<translate:getLanguageName code=\"fr\"/>")
+        assertOutputEquals('FRENCH',template)
     }
 }
