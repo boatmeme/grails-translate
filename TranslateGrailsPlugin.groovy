@@ -1,4 +1,4 @@
-class GrailsTranslateGrailsPlugin {
+class TranslateGrailsPlugin {
     // the plugin version
     def version = "0.1"
     // the version or versions of Grails the plugin is designed for
@@ -19,7 +19,7 @@ Translates text from one language to another, using Google Translate
 '''
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/grails-translate"
+    def documentation = "http://grails.org/plugin/translate"
 
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before 
