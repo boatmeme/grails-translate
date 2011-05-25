@@ -42,7 +42,7 @@
   <body>
     <g:set var="pluginManager" value="${applicationContext.getBean('pluginManager')}"></g:set>
 <div id="container">
-  <div id="title">grails-translate vv<a href="https://github.com/boatmeme/grails-translate/tree/v${pluginManager?.getGrailsPlugin('translate')?.version}">${pluginManager?.getGrailsPlugin('translate')?.version}</a></div>
+  <div id="title">grails-translate v<a href="https://github.com/boatmeme/grails-translate/tree/v${pluginManager?.getGrailsPlugin('translate')?.version}">${pluginManager?.getGrailsPlugin('translate')?.version}</a></div>
   <g:form method="post">
     Original Text<br/>
     <textarea name="originalText">${params?.originalText?.trim()}</textarea>
