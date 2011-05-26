@@ -36,6 +36,12 @@
           padding-right: 5px;
           color:#666333;
         }
+        #error {
+          color:WHITE;
+          background-color: RED;
+          margin:2px;
+          padding:5px;
+        }
     </style>
     <title>grails-translate plugin</title>
   </head>
@@ -51,6 +57,9 @@
     <g:actionSubmit value="Tranlsate" action="Translate"/>
     <g:actionSubmit value="Detect Language" action="Detect"/>
   </g:form><br/>
+    <g:if test="${flash.error}">
+      <div id="error">${flash.error}</div>
+    </g:if>
     <g:if test="${translation}">
       <div id="tab">Translation</div><div id="translation"> ${translation} </div>
     </g:if>
