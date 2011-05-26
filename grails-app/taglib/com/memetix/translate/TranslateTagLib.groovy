@@ -18,13 +18,14 @@ class TranslateTagLib {
     
     def languageSelect = { attrs, body ->
         def select = out
-        def value = attrs.remove('value')
+        def value = attrs.remove('value') ?: ''
+        def excludeAuto = attrs.remove('excludeAuto') ?: false;
         def languages = translateService.getLanguages()
         select << "<select name=\"${attrs.remove('name')?.encodeAsHTML()}\" "
         select << ">"
         def selected = ""
         for(langName in languages.keySet()) {
-            if(langName != "AUTO_DETECT") {
+            if(langName != "AUTO_DETECT" || !excludeAuto) {
                 selected = ""
                 if(languages.get(langName).equals(value))
                     selected = "SELECTED "
