@@ -96,4 +96,72 @@ class TranslateController {
             render responseObj."data".translation
         }
     }
+    
+    def detectAjax = {
+        def languageResult = params?.originalText
+        def startTime = System.currentTimeMillis()
+        def responseObj
+        
+        def format = params?.format?.toLowerCase() ?: 'json'
+        
+        if(!languageResult) {
+            responseObj = ["status_code":"500","status_text":"MISSING_PARAMETER","errors":["Please provide an 'originalText' parameter with the text to be translated"],"data":[]]
+        } else {
+            def expandedMap
+            responseObj = ["status_code":"200","status_text":"OK","data":[],"errors":[]]
+            try {
+                languageResult = translateService.detect(params?.originalText)
+                responseObj."data" = ["code":languageResult,"language":getLanguageName(languageResult)]
+            } catch(Exception e) {
+                log.error e
+                responseObj."status_code" = "500"
+                responseObj."status_text" = "INVALID_LANGUAGE_PAIR"
+                responseObj."errors".add(e?.getMessage())
+            }
+        }
+        
+        if(format=='json') {
+            responseObj."elapsedTime" = System.currentTimeMillis()-startTime
+            render responseObj as JSON
+        } else if(format=='xml'){
+            def b = new groovy.xml.StreamingMarkupBuilder()
+            b.encoding = "UTF-8"
+            def xml = b.bind {
+                    mkp.xmlDeclaration()
+                    response {
+                        status_code(responseObj."status_code")
+                        status_text(responseObj."status_text")
+                        errors {
+                            for(e in responseObj."errors") {
+                                error(e)
+                            }
+                        }
+                        data {
+                            if(responseObj?.data?.language) {
+                                language {
+                                    name(responseObj."data"."language")
+                                    code(responseObj."data"."code")
+                                }
+                            }
+                        }
+                        elapsedTime(System.currentTimeMillis()-startTime)
+                    }
+            }
+            render(text: xml.toString(),contentType:'text/xml') 
+        } else {
+            render responseObj."data".language
+        }
+    }
+    
+    private getLanguageName(code) {
+        def languages = translateService.getLanguages()
+        def name
+        for(lang in languages) {
+            if(lang.value.equals(code)) {
+                name = lang.key
+                break;
+            }
+        }
+        return name
+    }
 }

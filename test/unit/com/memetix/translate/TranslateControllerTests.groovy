@@ -98,6 +98,36 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         assertNotNull   controller.flash.error
         assertEquals    englishPhrase,model.translation
     }
+    
+    void testAjax_JSON_Detect() {
+        controller.params.originalText = englishPhrase
+        controller.detectAjax()    
+        
+        def jsonResponse = JSON.parse(controller.response.contentAsString)
+        assertCommonResponseParams(jsonResponse)
+        
+        assertEquals statusCodeOk,  jsonResponse.status_code.toString()
+        assertEquals statusTextOk,  jsonResponse.status_text.toString()
+        assertEquals 2,             jsonResponse.data.size()
+        
+        assertEquals "en",          jsonResponse?.data?.code         ?.toString()
+        assertEquals "ENGLISH",     jsonResponse?.data?.language     ?.toString()
+    }
+    
+    void testAjax_JSON_Detect_MissingParameter() {
+        controller.params.toLang = "hy"
+        controller.detectAjax()    
+        
+        def response = JSON.parse(controller.response.contentAsString)
+        assertCommonResponseParams(response)
+        
+        assertEquals statusCodeServerError,     response    ?.status_code   ?.toString()
+        assertEquals statusTextMissingParameter,response    ?.status_text   ?.toString()
+        
+        assertEquals 1,                         response    ?.errors      ?.size()
+        assertEquals missingParameterError,     response    ?.errors[0]  ?.toString()
+        assertEquals 0,                         response    ?.data.entry        ?.size()
+    }
 
     void testAjax_JSON_Translate() {
         controller.params.originalText = englishPhrase
@@ -114,7 +144,8 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         assertEquals frenchPhrase,    jsonResponse?.data?.translation     ?.toString()
     }
     
-    void testAjax_JSON_InvalidLanguagePair() {
+    
+    void testAjax_JSON_Translate_InvalidLanguagePair() {
         controller.params.originalText = englishPhrase
         controller.params.toLang = "hy"
         controller.ajax()    
@@ -130,7 +161,7 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         assertEquals 0,                         response    ?.data.entry        ?.size()
     }
     
-     void testAjax_JSON_MissingParameter() {
+     void testAjax_JSON_Translate_MissingParameter() {
         controller.params.toLang = "hy"
         controller.ajax()    
         
@@ -143,6 +174,23 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         assertEquals 1,                         response    ?.errors      ?.size()
         assertEquals missingParameterError,     response    ?.errors[0]  ?.toString()
         assertEquals 0,                         response    ?.data.entry        ?.size()
+    }
+    
+    void testAjax_XML_Detect() {
+        controller.params.originalText = englishPhrase
+        controller.params.format = xmlFormat
+        controller.detectAjax()    
+        
+        def response = XML.parse(controller.response.contentAsString)
+        assertCommonResponseParams(response)
+        
+        assertEquals statusCodeOk,  response.status_code.toString()
+        assertEquals statusTextOk,  response.status_text.toString()
+        assertEquals 1,             response.data.size()
+         
+        assertEquals "en",      response?.data?.language?.code     ?.toString()
+        assertEquals "ENGLISH", response?.data?.language?.name     ?.toString()
+        
     }
     
     void testAjax_XML_Translate() {
@@ -161,7 +209,7 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         assertEquals frenchPhrase,  response?.data?.translation     ?.toString()
     }
     
-    void testAjax_XML_InvalidLanguagePair() {
+    void testAjax_XML_Translate_InvalidLanguagePair() {
         controller.params.originalText = englishPhrase
         controller.params.toLang = "hy"
         controller.params.format = xmlFormat
@@ -178,7 +226,7 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         assertEquals 0,                         response    ?.data.entry        ?.size()
     }
     
-     void testAjax_XML_MissingParameter() {
+     void testAjax_XML_Translate_MissingParameter() {
         controller.params.toLang = "hy"
         controller.params.format = xmlFormat
         controller.ajax()
