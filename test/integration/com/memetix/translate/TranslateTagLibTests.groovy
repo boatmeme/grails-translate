@@ -12,7 +12,7 @@ class TranslateTagLibTests extends GroovyPagesTestCase  {
         super.tearDown()
     }
 
-    void testLanguageSelect_NoAutoDetect() {
+    void testLanguageSelect_AutoDetectExclude() {
         def template = applyTemplate("<translate:languageSelect excludeAuto='true' name='languages' value='fr'/>")
         println template
         assertTrue template?.contains('<select name="languages" >')
@@ -30,6 +30,27 @@ class TranslateTagLibTests extends GroovyPagesTestCase  {
         assertTrue template?.contains('<option value="en">ENGLISH</option>')
         assertTrue template?.contains('<option SELECTED value="fr">FRENCH</option>')
         assertTrue template?.contains('<option value="">AUTO_DETECT</option>')
+        assertTrue template?.contains('</select>')
+        
+    }
+    
+    void testLanguageSelect_AutoDetect_Default() {
+        def template = applyTemplate("<translate:languageSelect name='languages'/>")
+        println template
+        assertTrue template?.contains('<select name="languages" >')
+        assertTrue template?.contains('<option value="en">ENGLISH</option>')
+        assertTrue template?.contains('<option value="fr">FRENCH</option>')
+        assertTrue template?.contains('<option SELECTED value="">AUTO_DETECT</option>')
+        assertTrue template?.contains('</select>')    
+    }
+    
+    void testLanguageSelect_AutoDetectExclude_Default() {
+        def template = applyTemplate("<translate:languageSelect excludeAuto='true' name='languages'/>")
+        println template
+        assertTrue template?.contains('<select name="languages" >')
+        assertTrue template?.contains('<option value="en">ENGLISH</option>')
+        assertTrue template?.contains('<option value="fr">FRENCH</option>')
+        assertFalse template?.contains('<option value="">AUTO_DETECT</option>')
         assertTrue template?.contains('</select>')
         
     }
