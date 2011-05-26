@@ -53,7 +53,7 @@
     Original Text<br/>
     <textarea name="originalText">${params?.originalText?.trim()}</textarea>
     <br/>
-    <translate:languageSelect name='toLang' value="${params?.toLang}"/>
+    <translate:languageSelect name='toLang' excludeAuto="true" value="${params?.toLang}"/>
     <g:actionSubmit value="Tranlsate" action="Translate"/>
     <g:actionSubmit value="Detect Language" action="Detect"/>
   </g:form><br/>
