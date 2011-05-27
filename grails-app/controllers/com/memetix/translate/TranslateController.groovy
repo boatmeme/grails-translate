@@ -12,7 +12,9 @@ import groovy.xml.MarkupBuilder
  * /translate action performs Translate API calls and renders the index view
  * /detect action performs Detect Language API calls and renders the index view
  * 
- * 
+ * @author Jonathan Griggs  <jonathan.griggs @ gmail.com>
+ * @version     1.0   2011.05.26                              
+ * @since       1.0   2011.05.24    
  */
 class TranslateController {
     def translateService

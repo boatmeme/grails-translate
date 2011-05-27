@@ -11,8 +11,8 @@ import com.memetix.translate.LRUCache;
  * Provides a service that wraps the Google Translation API. 
  * 
  * @author Jonathan Griggs  <jonathan.griggs @ gmail.com>
- * @version     0.1   2011.05.24                              
- * @since       0.1   2011.05.24                            
+ * @version     1.0   2011.05.24                              
+ * @since       1.0   2011.05.24                            
  */
 
 class TranslateService {
@@ -44,8 +44,8 @@ class TranslateService {
      * @param  toLang A String representing the google abbreviation for a language (ex. "en" or "fr"), OR an instance of the Google API Language Enum            
      * @return The translated String
      *
-     * @version     0.1   2011.05.24                              
-     * @since       0.1   2011.05.24   
+     * @version     1.0   2011.05.24                              
+     * @since       1.0   2011.05.24   
      */
     
     def translate(originText,fromLang,toLang) {
@@ -121,8 +121,8 @@ class TranslateService {
      * @param  toLang A String representing the google abbreviation for a language (ex. "en" or "fr"), OR an instance of the Google API Language Enum            
      * @return The translated String
      *
-     * @version     0.1   2011.05.24                              
-     * @since       0.1   2011.05.24   
+     * @version     1.0   2011.05.24                              
+     * @since       1.0   2011.05.24   
      */
     
     def translate(originText, toLang) {
@@ -140,8 +140,8 @@ class TranslateService {
      * @param  originText A String used to detect the language
      * @return A String; Google's best guess at a Language
      *
-     * @version     0.1   2011.05.24                              
-     * @since       0.1   2011.05.24   
+     * @version     1.0   2011.05.24                              
+     * @since       1.0   2011.05.24   
      */
     def detect(originText) {
         log.debug("Executing TranslationService.detect(${originText}")
@@ -185,8 +185,8 @@ class TranslateService {
      * 
      * @return A Map with key/value of Language Name / Language Abbreviation. In alphabetical order, by key
      *
-     * @version     0.1   2011.05.24                              
-     * @since       0.1   2011.05.24   
+     * @version     1.0   2011.05.24                              
+     * @since       1.0   2011.05.24   
      */
     def getLanguages() {
         log.debug("Executing TranslationService.getLanguages()")
@@ -197,6 +197,7 @@ class TranslateService {
                 languageMap.put(lang.name(),lang.language)
             }
         }
+        println languageMap
         return languageMap
     }
     
@@ -205,13 +206,12 @@ class TranslateService {
      *
      * Returns the full name of the language corresponding to the language code passed in
      * 
-     * The code is a two-letter ISO Language Code supported by the Google Translation API
-     * 
+     * The code is a two-letter ISO Language Code supported by the Google Translation API 
      * 
      * @return A String representing the full name of the language, null if no match
      *
-     * @version     1.0   2011.05.24                              
-     * @since       1.0   2011.05.24   
+     * @version     1.0   2011.05.26                              
+     * @since       1.0   2011.05.26   
      */
     def getLanguageName(code) {
         log.debug("Executing TranslationService.getLanguageName(${code})")

@@ -6,11 +6,12 @@ package com.memetix.translate
  * 
  * tags: translateText
  *       languageSelect
- *        
+ *       detectLanguage
+ *       getLanguageName
  * 
  * @author Jonathan Griggs  <jonathan.griggs @ gmail.com>
- * @version     0.1     2011.05.24                              
- * @since       0.1     2011.05.24                            
+ * @version     1.0     2011.05.26                              
+ * @since       1.0     2011.05.24                            
  */
 class TranslateTagLib {
     static namespace = "translate"
