@@ -424,6 +424,8 @@ The source code is available on GitHub at [https://github.com/boatmeme/grails-tr
 
 Find a bug? Fork it. Fix it. Issue a pull request.
 
+    git clone git://github.com/boatmeme/grails-translate
+
 Contributions welcome!
 
 ## Issue Tracking @ GitHub
