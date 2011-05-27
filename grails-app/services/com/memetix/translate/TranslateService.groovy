@@ -3,7 +3,6 @@ package com.memetix.translate;
 import com.google.api.translate.Language;
 import com.google.api.translate.Translate;
 import com.google.api.detect.Detect;
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import com.memetix.translate.LRUCache;
 
 /**
@@ -17,13 +16,13 @@ import com.memetix.translate.LRUCache;
  */
 
 class TranslateService {
-
+    def grailsApplication
     static transactional = false
-    static languageMap
-    static httpReferrer = ConfigurationHolder?.config?.grails?.serverURL ?: 'http://localhost/translate'
-    static apiKey = ConfigurationHolder?.config?.translate?.google?.apiKey
-    static maxTCacheSize = ConfigurationHolder?.config?.translate?.translation?.cache?.maxSize ?: 1000
-    static maxDCacheSize = ConfigurationHolder?.config?.translate?.detection?.cache?.maxSize ?: 1000
+    def languageMap
+    def httpReferrer = grailsApplication?.config?.grails?.serverURL ?: 'http://localhost/translate'
+    def apiKey = grailsApplication?.config?.translate?.google?.apiKey
+    def maxTCacheSize = grailsApplication?.config?.translate?.translation?.cache?.maxSize ?: 1000
+    def maxDCacheSize = grailsApplication?.config?.translate?.detection?.cache?.maxSize ?: 1000
     def tCache = new LRUCache(maxTCacheSize)
     def dCache = new LRUCache(maxDCacheSize)
 
