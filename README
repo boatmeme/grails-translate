@@ -1,3 +1,0 @@
-The Translate plugin provides Services/Controllers/Taglibs for performing language translation in your Grails application
-
-It uses Google Translate, and therefore requires a Google API key for any application that wishes to use this plugin.
