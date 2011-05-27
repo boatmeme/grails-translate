@@ -7,7 +7,7 @@ The Translate plugin provides a Grails Service, TagLib, and Controller to enable
 This plugin wraps the Google Translate API with the help of the unofficial [Java Client](https://github.com/richmidwinter/google-api-translate-java).
 
 The TranslateService is backed by a configurable Least-Recently-Used (LRU) Cache to reduce the API calls made, particularly for oft-repeated
-translations (dynamically translated I18N messages, for instance).
+translations (if you're dynamically translating I18N messages for foreign languages, for instance).
 
 ## Installation
 
