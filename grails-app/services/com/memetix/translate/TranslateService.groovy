@@ -197,7 +197,6 @@ class TranslateService {
                 languageMap.put(lang.name(),lang.language)
             }
         }
-        println languageMap
         return languageMap
     }
     

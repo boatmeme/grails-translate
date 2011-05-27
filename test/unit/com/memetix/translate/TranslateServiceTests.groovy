@@ -155,7 +155,6 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         for(lang in Language.values()) {
             assertEquals lang.toString(), languages.get(lang.name())
         }
-        println languages
     }
     
     void testFromLangBad_Exception() {

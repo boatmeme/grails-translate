@@ -49,6 +49,9 @@ class TranslateController {
     
     def ajax = {
         def translationResult = params?.originalText
+        def toLang = params?.toLang
+        def fromLang = params?.fromLang
+        
         def startTime = System.currentTimeMillis()
         def responseObj
         
@@ -56,11 +59,16 @@ class TranslateController {
         
         if(!translationResult) {
             responseObj = ["status_code":"500","status_text":"MISSING_PARAMETER","errors":["Please provide an 'originalText' parameter with the text to be translated"],"data":[]]
+        } else if(!toLang) {
+            responseObj = ["status_code":"500","status_text":"MISSING_PARAMETER","errors":["Please provide a 'toLang' parameter with the target language ISO code"],"data":[]]
         } else {
             def expandedMap
             responseObj = ["status_code":"200","status_text":"OK","data":[],"errors":[]]
             try {
-                translationResult = translateService.translate(params?.originalText,params?.toLang)
+                if(fromLang)
+                    translationResult = translateService.translate(params?.originalText,fromLang,toLang)
+                else
+                    translationResult = translateService.translate(params?.originalText,toLang)
                 responseObj."data" = ["translation":translationResult]
             } catch(Exception e) {
                 log.error e

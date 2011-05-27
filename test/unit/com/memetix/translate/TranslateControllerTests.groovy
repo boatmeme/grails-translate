@@ -24,6 +24,7 @@ class TranslateControllerTests extends ControllerUnitTestCase {
     
     def missingParameterError = "Please provide an 'originalText' parameter with the text to be translated"
     def translateError = "Google returned the following error: [400] could not reliably detect source language"
+    def toLangError = "Please provide a 'toLang' parameter with the target language ISO code"
     protected void setUp() {
         super.setUp()
         setupLogger()
@@ -126,6 +127,21 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         
         assertEquals 1,                         response    ?.errors      ?.size()
         assertEquals missingParameterError,     response    ?.errors[0]  ?.toString()
+        assertEquals 0,                         response    ?.data.entry        ?.size()
+    }
+    
+    void testAjax_JSON_Detect_MissingParameter_toLang() {
+        controller.params.originalText = "Translation"
+        controller.ajax()    
+        
+        def response = JSON.parse(controller.response.contentAsString)
+        assertCommonResponseParams(response)
+        
+        assertEquals statusCodeServerError,     response    ?.status_code   ?.toString()
+        assertEquals statusTextMissingParameter,response    ?.status_text   ?.toString()
+        
+        assertEquals 1,                         response    ?.errors      ?.size()
+        assertEquals toLangError,     response    ?.errors[0]  ?.toString()
         assertEquals 0,                         response    ?.data.entry        ?.size()
     }
 
