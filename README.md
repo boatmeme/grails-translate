@@ -94,7 +94,7 @@ Example:
     def originalText = "This is a string of text"
     def toLang = "fr"
     
-    translateService?.translate(originalText, fromLang, toLang)
+    translateService?.translate(originalText, toLang)
 
 _returns_
 
