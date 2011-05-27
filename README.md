@@ -99,7 +99,7 @@ Example:
 
 _returns_
 
-    Il s'agit d'une cha�ne de texte
+    Il s'agit d'une cha?ne de texte
     
 ***
 ### translate(originText,fromLang,toLang)    
@@ -136,7 +136,7 @@ Example:
 
 _returns_
 
-    Il s'agit d'une cha�ne de texte
+    Il s'agit d'une cha?ne de texte
 
 ***
 ### detect(originText)                         
@@ -235,84 +235,111 @@ All Translate tags exist in the `translate` namespace.
 
 Builds a &lt;SELECT&gt; list with all of the possible language choices.
 
+_Parameters_
 
+* **name** - the name of the lt;SELECT&gt; form element
+* **value** - the two-letter code to mark as _SELECTED_
+* **excludeAuto** - Exclude the AUTO_DETECT language. Useful if you want to force the user to pick a language. _Defaults to `false`_
 
-    <translate:languageSelect value="en" />
+_Example_
 
+    <translate:languageSelect value="en" name="targetLanguage" />
 
 _results in_
 
-    I just tweeted this URL so you could see it http://www.cbsnews.com/8301-503543_162-20063168-503543.html 
-    and also this one http://iamthetrend.com/2011/02/10/10-examples-of-awesome-indie-clothing-look-books/
+     <select name='targetLanguage'>
+         <option value="af">AFRIKAANS</option>
+         <option value="af">ALBANIAN</option>
+         <option value="af">AMHARIC</option>
+         ...
+         <option value="">AUTO_DETECT</option>
+         ...
+         <option SELECTED value="en">ENGLISH</option>
+         ...
+         ...
+         <option value="vi">VIETNAMESE</option>
+         <option value="cy">WELSH</option>
+         <option value="yi">YIDDISH</option>
+     </select>
+     
 ***
-### expandAndLinkUrls
+### translateText
 
+Translates the text inside the tags to the language specified by the toLang parameter
 
-    <unshorten:expandAndLinkUrls linkClass="myLinkClass">
-        I just tweeted this URL so you could see it http://bit.ly/jkD0Qr, 
-        and also this one http://t.co/8lrqrZf
-    </unshorten:expandAndLinkUrls>
+_Parameters_
+
+* **toLang** - The two-letter character code representing the target language for the translation
+* **fromLang** - The optional two-letter character code representing the source language of the text. _Defaults to `AUTO\_DETECT`_
+
+_Example_
+
+    <translate:translateText toLang='fr'>This is an english phrase I would like translated</translate:translateText>
 
 _results in_
 
-    I just tweeted this URL so you could see it 
-    <a class="myLinkClass" href="http://www.cbsnews.com/8301-503543_162-20063168-503543.html">
-        http://www.cbsnews.com/8301-503543_162-20063168-503543.html 
-    </a>
-    and also this one 
-    <a class="myLinkClass" href="http://iamthetrend.com/2011/02/10/10-examples-of-awesome-indie-clothing-look-books/">
-       http://iamthetrend.com/2011/02/10/10-examples-of-awesome-indie-clothing-look-books/
-    </a>
+     Il s'agit d'une phrase en anglais que je voudrais traduire
+     
 ***
-### unshortenUrl
+### detectLanguage
 
+Prints the full name of the detected language of the text in the `text` parameter
 
-    <unshorten:unshortenUrl url='http://bit.ly/jkD0Qr'/>
+_Parameters_
+
+* **text** - The text for which we would like to know the native language
+
+_Example_
+
+    <translate:detectLanguage text="Il s'agit d'une phrase en anglais que je voudrais traduire"/>
 
 _results in_
 
-
-    http://www.cbsnews.com/8301-503543_162-20063168-503543.html
-
+     FRENCH
+     
 ***
-### unshortenAndLinkUrl
+### getLanguageName
 
+Prints the full name of the language for the specified code
 
-    <unshorten:unshortenAndLinkUrl class="myLinkClass" url='http://bit.ly/jkD0Qr'/>
+_Parameters_
 
+* **code** - The two letter ISO Language code for which we would like to know the full name
 
+_Example_
+
+    <translate:getLanguageName code=\"fr\"/>
+    
 _results in_
 
+     FRENCH
 
-    <a class="myLinkClass" href="http://www.cbsnews.com/8301-503543_162-20063168-503543.html">
-        http://www.cbsnews.com/8301-503543_162-20063168-503543.html 
-    </a>
-
-
-# <p id="controller">UnshortenController</p>
+# TranslateController
 
 ## Actions
 
 ***
-### /unshorten/
+### /translate/
 
-Provides a test form for validating the functionality of the Unshorten plugin and testing individual URLs. May serve as a template for your own application.
+Provides a test form for validating the functionality of the Translate plugin. May serve as a template for your own application.
+
 ***
-### /unshorten/ajax
+### /translate/ajax
 
- AJAX Action, accepts params and returns an HTML fragment, JSON, or XML
+ Translate AJAX Action, accepts params and returns an HTML fragment, JSON, or XML
 
 _Parameters_
 
-* **shortUrl** - one or more URLs
-* **shortText** - one or more blocks of text that may contain shortened links (i.e. Tweets)
+* **originalText** - the text to be translated
+* **toLang** - the two letter ISO language code of the target translation language
+* **fromLang** - the two letter ISO language code of the source translation language - if not provided, defaults to AUTO_DETECT
 * **format** - `json`, `xml`, or `html`. Determines the format of the response. Defaults to `json`.
 
-> _At least 1 shortUrl OR shortText must be supplied, or the response will return a 500 status\_code_
+> _The originalText and toLang paramter must be supplied, or the response will return a 500 status\_code_
 
 For example, doing an HTTP GET on this URL:
 
-    app-context/unshorten/ajax?shortUrl=http://bit.ly/jkD0Qr&shortUrl=http://t.co/8lrqrZf&shortText=Tweet!%20http://bit.ly/11Da1f
+    app-context/translate/ajax?originalText=This%20is%20an%20english%20phrase%20I%20would%20like%20translated&toLang=fr
 
 might return the following JSON:
 
@@ -322,78 +349,79 @@ might return the following JSON:
       "status_text":"OK",
       "elapsedTime":13,
       "errors":[],
-       "data":
-           [
-               {
-                "cached":false,
-                "fullUrl":"http://iamthetrend.com/2011/02/10/10-examples-of-awesome-indie-clothing-look books/",
-                "status":"UNSHORTENED",
-                "shortUrl":"http://t.co/8lrqrZf"
-                "type":"url"
-               },
-               {
-                 "cached":false,
-                 "fullUrl":"http://www.cbsnews.com/8301-503543_162-20063168-503543.html",
-                 "status":"UNSHORTENED",
-                 "shortUrl":"http://bit.ly/jkD0Qr"
-                 "type":"url"
-                },
-                {
-                 "fullText":"Tweet! http://twitcaps.com",
-                 "shortText":"Tweet! http://bit.ly/11Da1f"
-                 "type":"text"
-                }
-            ]
+      "data": ["translation":"Il s'agit d'une phrase en anglais que je voudrais traduire"]
     }
 
 
 OR the following XML:
 
  
-    <response>
-        <status_code>200</status_code>
-        <status_text>OK</status_text>
-        <errors />
-        <data>
-            <entry>
-                <type>url</type>
-                <shortUrl>http://t.co/8lrqrZf</shortUrl>
-                <fullUrl>
-                     http://iamthetrend.com/2011/02/10/10-examples-of-awesome-indie-clothing-look-books/
-                </fullUrl>
-                <status>UNSHORTENED</status>
-                <cached>false</cached>
-            </entry>
-            <entry>
-                <type>url</type>
-                <shortUrl>http://bit.ly/jkD0Qr</shortUrl>
-                <fullUrl>
-                    http://www.cbsnews.com/8301-503543_162-20063168-503543.html
-                 </fullUrl>
-                <status>UNSHORTENED</status>
-                <cached>false</cached>
-            </entry>
-            <entry>
-                <type>text</type>
-                <shortText>Tweet! http://bit.ly/11Da1f</shortText>
-                <fullText>Tweet! http://twitcaps.com/</fullText>
-            </entry>
-        </data>
-        <elapsedTime>91</elapsedTime>
-    </response>
+    <?xml version='1.0' encoding='UTF-8'?>
+     <response>
+         <status_code>200</status_code>
+         <status_text>OK</status_text>
+         <errors></errors>
+         <data>
+         	<translation>Il s'agit d'une phrase en anglais que je voudrais traduire</translation>
+         </data>
+         <elapsedTime>147</elapsedTime>
+     </response>
+     
+***
+### /translate/detectAjax
 
+ Detect Language AJAX Action, accepts params and returns an HTML fragment, JSON, or XML
+
+_Parameters_
+
+* **originalText** - the text for which we would like to detect the language
+* **format** - `json`, `xml`, or `html`. Determines the format of the response. Defaults to `json`.
+
+> _The originalText paramter must be supplied, or the response will return a 500 status\_code_
+
+For example, doing an HTTP GET on this URL:
+
+    app-context/translate/detectAjax?originalText=This%20is%20an%20english%20phrase%20I%20would%20like%20detected
+
+might return the following JSON:
+
+
+    {
+      "status_code":"200",
+      "status_text":"OK",
+      "elapsedTime":13,
+      "errors":[],
+      "data": ["code":"en","language":"ENGLISH"]
+    }
+
+
+OR the following XML:
+
+ 
+    <?xml version='1.0' encoding='UTF-8'?>
+     <response>
+         <status_code>200</status_code>
+         <status_text>OK</status_text>
+         <errors></errors>
+         <data>
+         	<language>
+         		<code>en</code>
+         		<name>ENGLISH</name>
+          	</language>
+         </data>
+         <elapsedTime>147</elapsedTime>
+     </response>
 
 ## Other plugins
 
-[urlreversi: Revert your shortened URLs](http://grails.org/plugin/urlreversi)
+Bradley Beddoes' [Auto Translate](http://bradleybeddoes.com/2010/11/grails-auto-translate-plugin/)
+---
 
-The urlreversi plugin has been around for quite a while longer than Unshorten and provides the basic functionality of Unshortening (shortUrl-in / fullUrl-out) in a Service as well as a TagLib for convenience.
-
-While it does not feature a Caching implementation as far as I can tell, it should not be too difficult to implement your own cache around its functionality.
+This plugin auto-generates Grails' i18n message files for other languages using the Google Translation API. Auto-translate is a script that you run in more of a one-off context than a full Grails integration with Google Translation. 
 
 ## Source Code @ GitHub
 
-The source code is available on GitHub at [https://github.com/boatmeme/grails-unshorten](https://github.com/boatmeme/grails-unshorten). 
+The source code is available on GitHub at [https://github.com/boatmeme/grails-translate](https://github.com/boatmeme/grails-translate). 
 
 Find a bug? Fork it. Fix it. Issue a pull request.
 
@@ -401,7 +429,7 @@ Contributions welcome!
 
 ## Issue Tracking @ GitHub
 
-Issue tracking is also on GitHub at [https://github.com/boatmeme/grails-unshorten/issues](https://github.com/boatmeme/grails-unshorten/issues).
+Issue tracking is also on GitHub at [https://github.com/boatmeme/grails-translate/issues](https://github.com/boatmeme/grails-translate/issues).
 
 Bug reports, Feature requests, and general inquiries welcome.
 
@@ -411,42 +439,6 @@ Feel free to contact me by email (jonathan.griggs at gmail.com) or follow me on 
 
 # Change Log
 
-## v1.0.4 - 2011.05.26
-
-* `unshorten.http.readTimeout` property was incorrectly named
-* Cosmetic changes on the test view, `app_context/unshorten`
-
-## v1.0.3 - 2011.05.22
-
-* Fixed bug where URL Status was being set to UNKNOWN when it should be set to TIMED_OUT
-* AJAX response can now return HTML
-* AJAX format parameter supports 'html' value
-* Support for 3 new configuration options:
-
-
-           unshorten.ajax.forward.html   = [controller:'myController', action:'myAction']
-           unshorten.ajax.forward.json   = [controller:'myController', action:'myAction']
-           unshorten.ajax.forward.xml    = [controller:'myController', action:'myAction']
-
-These can be (optionally) set to a map with the 'controller' and 'action' in your application to forward the results of the Unshorten AJAX action. By specifying these options you can process or style the data before returning it to the browser.
-
-## v1.0.2 - 2011.05.20
-
-* Added UnshortenService.expandUrlsInTextAll() to take a list of 1 - n text blocks and return the results of expanding all of them
-* AJAX action now supports �shortText� parameter which operates on blocks of text instead of individual urls
-* AJAX response �data� object now returns �type� property. This can be either �url� or �text�
-* AJAX response now returns �elapsedTime� property (time of call in milliseconds)
-* AJAX response can now return XML
-* AJAX action now supports �format� parameter which can be either �json� or �xml�. Defaults to �json�
-* Added UrlStatus Enum to UnshortenService
-
-## v1.0.1 - 2011.05.19 
-
-* Added support for redirects via HTTP 302 and 303 (bad shortener!)
-* Added support for chaining redirects
-* Fixed bug with relative redirects
-* Added status for "redirect"
-
-## v1.0 - 2011.05.17
+## v1.0 - 2011.05.27
 
 * Initial release
