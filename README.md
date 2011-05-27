@@ -99,7 +99,7 @@ Example:
 
 _returns_
 
-    Il s'agit d'une cha?ne de texte
+    Il s'agit d'une chaine de texte
     
 ***
 ### translate(originText,fromLang,toLang)    
