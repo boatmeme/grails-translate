@@ -13,9 +13,9 @@ class TranslateGrailsPlugin {
     // TODO Fill in these fields
     def author = "Jonathan Griggs"
     def authorEmail = "jonathan.griggs@gmail.com"
-    def title = "Plugin summary/headline"
+    def title = "Translate - Language Translation for Grails"
     def description = '''\\
-Translates text from one language to another, using Google Translate
+Translates text from one language to another, using the Google Translate API
 '''
 
     // URL to the plugin's documentation

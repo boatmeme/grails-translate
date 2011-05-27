@@ -18,8 +18,7 @@ class TranslateTagLibTests extends GroovyPagesTestCase  {
         assertTrue template?.contains('<option value="en">ENGLISH</option>')
         assertTrue template?.contains('<option SELECTED value="fr">FRENCH</option>')
         assertFalse template?.contains('<option value="">AUTO_DETECT</option>')
-        assertTrue template?.contains('</select>')
-        
+        assertTrue template?.contains('</select>') 
     }
     
     void testLanguageSelect_AutoDetect() {
