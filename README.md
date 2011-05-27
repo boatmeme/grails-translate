@@ -1,4 +1,4 @@
-# Translate - Google Translate API Plugin for Grails
+# Translate - Google Translate Plugin for Grails
 
 ## Description
 
