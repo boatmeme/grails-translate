@@ -1,4 +1,3 @@
-
 # Translate - Google Translate API Plugin for Grails
 
 ## Description
@@ -47,6 +46,8 @@ With or without the API Key, there is a 100,000 character per day courtesy limit
 This is the maximum number of Translation API calls that will be stored in the LRU Cache at any given time. 
 When this number is exceeded, the Least-Recently-Used entry in the Cache will be evicted.
 
+If you do not wish to cache the Translation API calls, set this value to **-1**
+
 _Defaults to 1000 entries_
 
 ***
@@ -54,6 +55,8 @@ _Defaults to 1000 entries_
 
 This is the maximum number of Language Detection API calls that will be stored in the LRU Cache at any given time. 
 When this number is exceeded, the Least-Recently-Used entry in the Cache will be evicted.
+
+If you do not wish to cache the Language Detection API calls, set this value to **-1**
 
 _Defaults to 1000 entries_
 
@@ -96,7 +99,7 @@ Example:
 
 _returns_
 
-    Il s'agit d'une chaîne de texte
+    Il s'agit d'une chaï¿½ne de texte
     
 ***
 ### translate(originText,fromLang,toLang)    
@@ -133,7 +136,7 @@ Example:
 
 _returns_
 
-    Il s'agit d'une chaîne de texte
+    Il s'agit d'une chaï¿½ne de texte
 
 ***
 ### detect(originText)                         
@@ -225,15 +228,16 @@ _returns_
 
 ## Tags
 
-All Unshorten tags exist in the `unshorten` namespace.
+All Translate tags exist in the `translate` namespace.
 
 ***
-### expandUrls
+### languageSelect
 
-    <unshorten:expandUrls>
-        I just tweeted this URL so you could see it http://bit.ly/jkD0Qr, 
-        and also this one http://t.co/8lrqrZf
-    </unshorten:expandUrls>
+Builds a &lt;SELECT&gt; list with all of the possible language choices.
+
+
+
+    <translate:languageSelect value="en" />
 
 
 _results in_
@@ -429,11 +433,11 @@ These can be (optionally) set to a map with the 'controller' and 'action' in you
 ## v1.0.2 - 2011.05.20
 
 * Added UnshortenService.expandUrlsInTextAll() to take a list of 1 - n text blocks and return the results of expanding all of them
-* AJAX action now supports ‘shortText’ parameter which operates on blocks of text instead of individual urls
-* AJAX response ‘data’ object now returns ‘type’ property. This can be either ‘url’ or ‘text’
-* AJAX response now returns ‘elapsedTime’ property (time of call in milliseconds)
+* AJAX action now supports ï¿½shortTextï¿½ parameter which operates on blocks of text instead of individual urls
+* AJAX response ï¿½dataï¿½ object now returns ï¿½typeï¿½ property. This can be either ï¿½urlï¿½ or ï¿½textï¿½
+* AJAX response now returns ï¿½elapsedTimeï¿½ property (time of call in milliseconds)
 * AJAX response can now return XML
-* AJAX action now supports ‘format’ parameter which can be either ‘json’ or ‘xml’. Defaults to ‘json’
+* AJAX action now supports ï¿½formatï¿½ parameter which can be either ï¿½jsonï¿½ or ï¿½xmlï¿½. Defaults to ï¿½jsonï¿½
 * Added UrlStatus Enum to UnshortenService
 
 ## v1.0.1 - 2011.05.19 
