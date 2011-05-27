@@ -57,13 +57,7 @@ class TranslateTagLib {
     
     def getLanguageName = { attrs ->
         def code = attrs?.code
-        def languages = translateService.getLanguages()
-        for(lang in languages) {
-            if(lang.value.equals(code)) {
-                code = lang.key
-                break;
-            }
-        }
-        out << code
+        def name = translateService.getLanguageName(code)
+        out << name
     }
 }

@@ -200,4 +200,30 @@ class TranslateService {
         return languageMap
     }
     
+    /**
+     * getLanguageName(code)                         
+     *
+     * Returns the full name of the language corresponding to the language code passed in
+     * 
+     * The code is a two-letter ISO Language Code supported by the Google Translation API
+     * 
+     * 
+     * @return A String representing the full name of the language, null if no match
+     *
+     * @version     1.0   2011.05.24                              
+     * @since       1.0   2011.05.24   
+     */
+    def getLanguageName(code) {
+        log.debug("Executing TranslationService.getLanguageName(${code})")
+        def languages = getLanguages()
+        def name
+        for(lang in languages) {
+            if(lang.value.equals(code)) {
+                name = lang.key
+                break;
+            }
+        }
+        return name
+    }
+    
 }

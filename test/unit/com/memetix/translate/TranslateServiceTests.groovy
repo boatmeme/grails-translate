@@ -197,4 +197,11 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         def translation = translateService.translate(orig, "en","en")
         assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
     }
+    
+    void testTranslateGetLanguageName() {
+        def language = translateService.getLanguageName("en")
+        assertEquals "ENGLISH",language
+        language = translateService.getLanguageName("fr")
+        assertEquals "FRENCH",language
+    }
 }

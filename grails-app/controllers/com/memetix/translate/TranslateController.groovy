@@ -111,7 +111,7 @@ class TranslateController {
             responseObj = ["status_code":"200","status_text":"OK","data":[],"errors":[]]
             try {
                 languageResult = translateService.detect(params?.originalText)
-                responseObj."data" = ["code":languageResult,"language":getLanguageName(languageResult)]
+                responseObj."data" = ["code":languageResult,"language":translateService.getLanguageName(languageResult)]
             } catch(Exception e) {
                 log.error e
                 responseObj."status_code" = "500"
@@ -151,17 +151,5 @@ class TranslateController {
         } else {
             render responseObj."data".language
         }
-    }
-    
-    private getLanguageName(code) {
-        def languages = translateService.getLanguages()
-        def name
-        for(lang in languages) {
-            if(lang.value.equals(code)) {
-                name = lang.key
-                break;
-            }
-        }
-        return name
     }
 }
