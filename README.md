@@ -83,8 +83,8 @@ If the user has set an API Key, method will send that, also
 
 _Parameters_
 
-* a String - the String to be translated
-* a String or com.google.api.translate.Language - the Language to translate TO
+* **originText** - the String to be translated
+* **toLang** - a two-character String or com.google.api.translate.Language enum instance - the Language to translate TO
 
 _Returns_
 
@@ -118,9 +118,9 @@ If the user has set an API Key, method will send that, also
 
 _Parameters_
 
-* a String - the String to be translated
-* a String or com.google.api.translate.Language - the Language to translate FROM
-* a String or com.google.api.translate.Language - the Language to translate TO
+* **originText** - the String to be translated
+* **fromLang** - a two-character String or com.google.api.translate.Language - the _source_ Language to translate FROM
+* **toLang** - a two-character String or com.google.api.translate.Language - the _target_ Language to translate TO
 
 _Returns_
 
@@ -147,7 +147,7 @@ If the user has set an API Key, method will send that, also
      
 _Parameters_
 
-* originText A String used to detect the language
+* **originText** - A String used to detect the language
 
 _Returns_
      
@@ -173,7 +173,7 @@ The code is a two-letter ISO Language Code supported by the Google Translation A
      
 _Parameters_
 
-* code -- A two-character string
+* **code** -- A two-character string
 
 _Returns_
      
