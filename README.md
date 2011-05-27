@@ -152,6 +152,7 @@ _Parameters_
 _Returns_
      
 * A String representing a 2-character language code; Google's best guess at a Language.
+
 Example:
 
     def originalText = "This is a string of text"
