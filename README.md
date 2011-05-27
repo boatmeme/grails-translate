@@ -416,7 +416,6 @@ OR the following XML:
 ## Other plugins
 
 Bradley Beddoes' [Auto Translate](http://bradleybeddoes.com/2010/11/grails-auto-translate-plugin/)
----
 
 This plugin auto-generates Grails' i18n message files for other languages using the Google Translation API. Auto-translate is a script that you run in more of a one-off context than a full Grails integration with Google Translation. 
 
