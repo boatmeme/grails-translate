@@ -31,7 +31,7 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         setupLogger()
         translateService = new TranslateService()
         def config = new ConfigSlurper().parse(new File( 'grails-app/conf/Config.groovy' ).text) 
-        translateService.apiKey = config.translate.microsoft.apiKey
+        translateService.apiKey = config.translate.test.microsoft.apiKey
         controller = new TranslateController()
         controller.translateService = translateService
         controller.response.setCharacterEncoding("UTF-8") 
