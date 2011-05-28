@@ -16,9 +16,9 @@
 **/
 package com.memetix.translate;
 
-import com.google.api.translate.Language;
-import com.google.api.translate.Translate;
-import com.google.api.detect.Detect;
+import com.memetix.mst.Language;
+import com.memetix.mst.translate.Translate;
+import com.memetix.mst.detect.Detect;
 import com.memetix.translate.LRUCache;
 
 /**
@@ -36,7 +36,7 @@ class TranslateService {
     static transactional = false
     def languageMap
     def httpReferrer = grailsApplication?.config?.grails?.serverURL ?: 'http://localhost/translate'
-    def apiKey = grailsApplication?.config?.translate?.google?.apiKey
+    def apiKey = grailsApplication?.config?.translate?.microsoft?.apiKey
     def maxTCacheSize = grailsApplication?.config?.translate?.translation?.cache?.maxSize ?: 1000
     def maxDCacheSize = grailsApplication?.config?.translate?.detection?.cache?.maxSize ?: 1000
     def tCache = new LRUCache(maxTCacheSize)
@@ -186,7 +186,7 @@ class TranslateService {
             log.debug("Caching Language Detect")
             dCache.put(originText.toString(),detectedLanguage)
         }
-        return detectedLanguage?.language?.toString()
+        return detectedLanguage?.toString()
     }
     
     /**

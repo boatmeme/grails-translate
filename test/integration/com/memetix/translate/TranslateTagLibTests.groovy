@@ -19,9 +19,12 @@ package com.memetix.translate
 import grails.test.*
 
 class TranslateTagLibTests extends GroovyPagesTestCase  {
+    def grailsApplication
+    def translateService
     
     protected void setUp() {
         super.setUp()
+        translateService.apiKey = grailsApplication.config.translate.microsoft.apiKey 
     }
 
     protected void tearDown() {
@@ -68,12 +71,12 @@ class TranslateTagLibTests extends GroovyPagesTestCase  {
     
     void testTranslateTextBodyToOnly() {
         def template = applyTemplate("<translate:translateText toLang='fr'>This is an english phrase I would like translated</translate:translateText>")
-        assertOutputEquals('Il s\'agit d\'une phrase en anglais que je voudrais traduire',template)
+        assertOutputEquals('Il s\'agit d\'une expression anglais je traduite',template)
     }
     
     void testTranslateTextBodyToAndFrom() {
         def template = applyTemplate("<translate:translateText toLang='fr' fromLang='en'>This is an english phrase I would like translated</translate:translateText>")
-        assertOutputEquals('Il s\'agit d\'une phrase en anglais que je voudrais traduire',template)
+        assertOutputEquals('Il s\'agit d\'une expression anglais je traduite',template)
     }
     
     void testDetectLanguageFrench() {

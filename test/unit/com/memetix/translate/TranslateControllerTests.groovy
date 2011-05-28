@@ -10,7 +10,8 @@ class TranslateControllerTests extends ControllerUnitTestCase {
     def translateService
     
     def englishPhrase = "One day last year, while working on a biography of the publisher Scofield Thayer, I opened a folder of papers related to his magazine The Dial. The folder contained undated letters from the poet E.E. Cummings to Thayer";
-    def frenchPhrase = "Un jour l'année dernière, tout en travaillant sur une biographie de l'éditeur Scofield Thayer, j'ai ouvert un dossier de documents liés à sa revue The Dial. Le dossier contenait des lettres non datée du poète EE Cummings à Thayer"
+    def frenchPhrase = "Un jour de l'an dernier, alors qu'il travaillait sur une biographie de l'éditeur Scofield Thayer, j'ai ouvert un dossier de documents liés à son cadran le magazine. Le dossier contenait des lettres non datées du poète E.E. Cummings à Thayer"
+    //def frenchPhrase = "Un jour l'année dernière, tout en travaillant sur une biographie de l'éditeur Scofield Thayer, j'ai ouvert un dossier de documents liés à sa revue The Dial. Le dossier contenait des lettres non datée du poète EE Cummings à Thayer"
     
     def statusCodeOk = "200"
     def statusCodeServerError = "500"
@@ -23,12 +24,14 @@ class TranslateControllerTests extends ControllerUnitTestCase {
     def xmlFormat = "xml"
     
     def missingParameterError = "Please provide an 'originalText' parameter with the text to be translated"
-    def translateError = "Google returned the following error: [400] could not reliably detect source language"
+    def translateError = "TO language is invalid"
     def toLangError = "Please provide a 'toLang' parameter with the target language ISO code"
     protected void setUp() {
         super.setUp()
         setupLogger()
         translateService = new TranslateService()
+        def config = new ConfigSlurper().parse(new File( 'grails-app/conf/Config.groovy' ).text) 
+        translateService.apiKey = config.translate.microsoft.apiKey
         controller = new TranslateController()
         controller.translateService = translateService
         controller.response.setCharacterEncoding("UTF-8") 

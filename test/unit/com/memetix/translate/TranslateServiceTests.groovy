@@ -17,19 +17,21 @@
 package com.memetix.translate
 
 import grails.test.*
-import com.google.api.translate.Language;
+import com.memetix.mst.Language;
 import org.apache.log4j.*
 
 class TranslateServiceTests extends GrailsUnitTestCase {
-    def translateService
+     def translateService
      def log
     
     protected void setUp() {
         super.setUp()
         setupLogger()
         translateService = new TranslateService()
+        def config = new ConfigSlurper().parse(new File( 'grails-app/conf/Config.groovy' ).text) 
+        translateService.apiKey = config.translate.microsoft.apiKe
     }
-
+    
     protected void tearDown() {
         super.tearDown()
     }
@@ -43,130 +45,115 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         // use groovy metaClass to put the log into your class
         TranslateService.class.metaClass.getLog << {-> log}
     }
+    
+    def frenchPhrase = "Il s'agit d'une expression anglais je traduite"
+    def englishPhrase = "This is an english phrase I would like translated"
+    
+    def frTransEnglish = "It is an English expression I translated"
 
     void testTranslateEnglishToFrench_Specific_Enum() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, Language.ENGLISH, Language.FRENCH)
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, Language.ENGLISH, Language.FRENCH)
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_Specific_Enum() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, Language.FRENCH, Language.ENGLISH)
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, Language.FRENCH, Language.ENGLISH)
+        assertEquals frTransEnglish,translation
     }
     
     void testTranslateEnglishToFrench_Specific_AutoDetect_Enum() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, Language.AUTO_DETECT, Language.FRENCH)
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, Language.AUTO_DETECT, Language.FRENCH)
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_Specific_AutoDetect_Enum() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, Language.AUTO_DETECT, Language.ENGLISH)
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, Language.AUTO_DETECT, Language.ENGLISH)
+        assertEquals frTransEnglish,translation
     }
     
     void testTranslateEnglishToFrench_AutoDetect_Enum() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, Language.FRENCH)
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, Language.FRENCH)
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_AutoDetect_Enum() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, Language.ENGLISH)
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, Language.ENGLISH)
+        assertEquals frTransEnglish,translation
     }
     
     void testTranslateEnglishToFrench_Specific_String_CAPS() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, "EN", "FR")
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, "EN", "FR")
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_Specific_String_CAPS() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, "FR", "EN")
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, "FR", "EN")
+        assertEquals frTransEnglish,translation
     }
     
     void testTranslateEnglishToFrench_Specific_AutoDetect_String_CAPS() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, "", "FR")
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, "", "FR")
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_Specific_AutoDetect_String_CAPS() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, "", "EN")
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, "", "EN")
+        assertEquals frTransEnglish,translation
     }
     
     void testTranslateEnglishToFrench_AutoDetect_String_CAPS() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, "FR")
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, "FR")
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_AutoDetect_String_CAPS() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, "EN")
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, "EN")
+        assertEquals frTransEnglish,translation
     }
     
     void testTranslateEnglishToFrench_Specific_String_LC() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, "en", "fr")
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, "en", "fr")
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_Specific_String_LC() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, "fr", "en")
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, "fr", "en")
+        assertEquals frTransEnglish,translation
     }
     
     void testTranslateEnglishToFrench_Specific_AutoDetect_String_LC() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, "", "fr")
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, "", "fr")
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_Specific_AutoDetect_String_LC() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, "", "en")
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, "", "en")
+        assertEquals frTransEnglish,translation
     }
     
     void testTranslateEnglishToFrench_AutoDetect_String_LC() {
-        def orig = "This is an english phrase I would like translated"
-        def translation = translateService.translate(orig, "fr")
-        assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
+        def translation = translateService.translate(englishPhrase, "fr")
+        assertEquals frenchPhrase,translation
     }
     
     void testTranslateFrenchToEnglish_AutoDetect_String_LC() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def translation = translateService.translate(orig, "en")
-        assertEquals "This is a sentence in English that I would translate",translation
+        def translation = translateService.translate(frenchPhrase, "en")
+        assertEquals frTransEnglish,translation
     }
     
     void testDetectEnglish() {
-        def orig = "This is an english phrase I would like translated"
-        def detect = translateService.detect(orig)
+        def detect = translateService.detect(englishPhrase)
         assertEquals Language.ENGLISH,Language.fromString(detect)
     }
     
     void testDetectFrench() {
-        def orig = "Il s'agit d'une phrase en anglais que je voudrais traduire"
-        def detect = translateService.detect(orig)
+        def detect = translateService.detect(frenchPhrase)
         assertEquals Language.FRENCH,Language.fromString(detect)
     }
     
     void testLanguageList() {
         def languages = translateService.getLanguages()
-        assertEquals 92, languages.size()
+        assertEquals 36, languages.size()
         def i = 0
         for(lang in Language.values()) {
             assertEquals lang.toString(), languages.get(lang.name())
