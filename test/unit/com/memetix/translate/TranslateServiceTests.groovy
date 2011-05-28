@@ -17,17 +17,24 @@
 package com.memetix.translate
 
 import grails.test.*
-import com.google.api.translate.Language;
+import com.memetix.mst.Language;
 import org.apache.log4j.*
 
 class TranslateServiceTests extends GrailsUnitTestCase {
     def translateService
-     def log
+    def log
+    def apiKey = "0B4B2CAA973775DBE72569A29C1A08DA55C88441"
+     protected void setUpConfig() {
+        def mockConfig = new ConfigObject() 
+        mockConfig.translate.microsoft.apiKey=apiKey
+        translateService.grailsApplication = new Expando(config: mockConfig)
+    }
     
     protected void setUp() {
         super.setUp()
         setupLogger()
         translateService = new TranslateService()
+        setUpConfig()
     }
 
     protected void tearDown() {

@@ -16,9 +16,9 @@
 **/
 package com.memetix.translate;
 
-import com.google.api.translate.Language;
-import com.google.api.translate.Translate;
-import com.google.api.detect.Detect;
+import com.memetix.mst.Language;
+import com.memetix.mst.translate.Translate;
+import com.memetix.mst.detect.Detect;
 import com.memetix.translate.LRUCache;
 
 /**
@@ -36,7 +36,7 @@ class TranslateService {
     static transactional = false
     def languageMap
     def httpReferrer = grailsApplication?.config?.grails?.serverURL ?: 'http://localhost/translate'
-    def apiKey = grailsApplication?.config?.translate?.google?.apiKey
+    def apiKey = grailsApplication?.config?.translate?.microsoft?.apiKey
     def maxTCacheSize = grailsApplication?.config?.translate?.translation?.cache?.maxSize ?: 1000
     def maxDCacheSize = grailsApplication?.config?.translate?.detection?.cache?.maxSize ?: 1000
     def tCache = new LRUCache(maxTCacheSize)
@@ -102,14 +102,19 @@ class TranslateService {
         }
         
         // Set the HTTP referrer to your website address.
-        Translate.setHttpReferrer(httpReferrer);
+        //Translate.setHttpReferrer(httpReferrer);
         
         // If app has set translate.google.apiKey, then by all means, use it
+        println apiKey
         if(apiKey)
             Translate.setKey(apiKey)
         //Run the translation
-        translatedText = Translate.execute(originText,lFrom,lTo);
-        
+        try {
+            translatedText = Translate.execute(originText,lFrom,lTo);
+        } catch (Exception e) {
+            println "${originText}, ${lFrom}, ${lTo}"
+            log.error e
+        }
         // If the cache has been configured, put into it
         if(maxTCacheSize>=0&&translatedText) {
             log.debug("Caching Translation")
@@ -174,7 +179,7 @@ class TranslateService {
             }
         }
         // Set the HTTP referrer to your website address.
-        Detect.setHttpReferrer(httpReferrer);
+        //Detect.setHttpReferrer(httpReferrer);
         // If app has set translate.google.apiKey, then by all means, use it
         if(apiKey)
             Detect.setKey(apiKey)
