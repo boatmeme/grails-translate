@@ -23,4 +23,4 @@ log4j = {
     warn   'org.mortbay.log'
 }
 
-translate.microsoft.apiKey = ""
+translate.test.microsoft.apiKey = ""

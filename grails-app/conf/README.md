@@ -2,7 +2,7 @@
 
 This file contains properties required for Unit Testing, chiefly, your Microsoft Translator API Key. 
 
-    translate.microsoft.apiKey = ""
+    translate.test.microsoft.apiKey = ""
 
 This API Key is _only_ used for Unit Testing. For normal usage, the API Key is set by the plugin's client application
 
