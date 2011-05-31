@@ -1,12 +1,16 @@
-# Translate - Google Translate Plugin for Grails
+# Translate - Language Translation Plugin for Grails
 
 ## Description
 
 The Translate plugin provides a Grails Service, TagLib, and Controller to enable translation of text within your Grails application.
 
-This plugin wraps the Google Translate API with the help of the unofficial [Java Client](https://github.com/richmidwinter/google-api-translate-java).
+This plugin wraps the Microsoft Translator API with the help of a [Java Client](https://github.com/boatmeme/microsoft-translation-java-api) written specifically to support this plugin after the deprecation of the Google Translate API.
 
 The TranslateService is backed by a configurable Least-Recently-Used (LRU) Cache to reduce the API calls made, particularly for oft-repeated translations (if you're dynamically translating i18n messages to foreign languages, for instance).
+
+## Requirements
+
+Requires a Bing AppID, freely obtainable from the [Bing Developer Center](http://www.bing.com/developers/createapp.aspx).
 
 ## Installation
 
