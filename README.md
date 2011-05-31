@@ -10,7 +10,7 @@ The TranslateService is backed by a configurable Least-Recently-Used (LRU) Cache
 
 ## Requirements
 
-Requires a Bing AppID, freely obtainable from the [Bing Developer Center](http://www.bing.com/developers/createapp.aspx).
+* Requires a Bing AppID, freely obtainable from the [Bing Developer Center](http://www.bing.com/developers/createapp.aspx).
 
 ## Installation
 
@@ -441,8 +441,8 @@ Feel free to contact me by email (jonathan.griggs at gmail.com) or follow me on 
 
 ## v1.1 - 2011.06.01
 
-Migrated off of Google Translation API and onto the Microsoft Translator API
-translate.microsoft.apiKey is now required to be specified in Config.groovy
+* Migrated off of Google Translation API and onto the Microsoft Translator API
+* translate.microsoft.apiKey is now required to be specified in Config.groovy
 
 ## v1.0 - 2011.05.27
 
