@@ -17,7 +17,7 @@
 package com.memetix.translate
 
 import grails.test.*
-import com.memetix.mst.Language;
+import com.memetix.mst.language.Language;
 import org.apache.log4j.*
 
 class TranslateServiceTests extends GrailsUnitTestCase {
