@@ -4,7 +4,7 @@
 
 The Translate plugin provides a Grails Service, TagLib, and Controller to enable translation of text within your Grails application.
 
-This plugin wraps the Microsoft Translator API with the help of a [Java Client](https://github.com/boatmeme/microsoft-translation-java-api) written specifically to support this plugin after the deprecation of the Google Translate API.
+This plugin wraps the [Microsoft Translator API](http://www.microsofttranslator.com/dev/) with the help of a [Java Client](https://github.com/boatmeme/microsoft-translation-java-api) written specifically to support this plugin after the deprecation of the Google Translate API.
 
 The TranslateService is backed by a configurable Least-Recently-Used (LRU) Cache to reduce the API calls made, particularly for oft-repeated translations (if you're dynamically translating i18n messages to foreign languages, for instance).
 
@@ -27,7 +27,7 @@ After you have installed the Translate plugin in your application, I'd recommend
 The TranslatePlugin may be configured with several parameters, all specified in your application's */grails-app/conf/Config.groovy*
 
 
-    translate.google.apiKey			= 'MY_API_KEY'	// Microsoft Translator API Key (REQUIRED)
+    translate.microsoft.apiKey			= 'MY_API_KEY'	// Microsoft Translator API Key (REQUIRED)
     translate.translation.cache.maxSize		= 1000		// Maximum size of the LRU Cache for Translations
     translate.detection.cache.maxSize		= 1000 		// Maximum size of the LRU Cache for Language Detection
 
