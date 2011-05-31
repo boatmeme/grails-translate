@@ -27,21 +27,16 @@ After you have installed the Translate plugin in your application, I'd recommend
 The TranslatePlugin may be configured with several parameters, all specified in your application's */grails-app/conf/Config.groovy*
 
 
-    translate.google.apiKey			= 'MY_API_KEY'	// Google Translate API Key (OPTIONAL)
+    translate.google.apiKey			= 'MY_API_KEY'	// Microsoft Translator API Key (REQUIRED)
     translate.translation.cache.maxSize		= 1000		// Maximum size of the LRU Cache for Translations
     translate.detection.cache.maxSize		= 1000 		// Maximum size of the LRU Cache for Language Detection
 
 ***
-### translate.google.apiKey
+### translate.microsoft.apiKey
 
-_OPTIONAL_
+_**REQUIRED**_
 
-This is your Google API Key that you received by signing up at the [Google API Console](https://code.google.com/apis/console). It is
-not required, but if you set this property, you will be able to track your API Usage Metrics at the Google API Console.
-
-It is also just good manners to use an API Key so that Google may be able to contact you if necessary.
-
-With or without the API Key, there is a 100,000 character per day courtesy limit. 
+This is your Bing AppID / API Key that you received by registering your application at the [Bing Developer Center](http://www.bing.com/developers/createapp.aspx). It is required to use this plugin.
 
 ***
 ### translate.translation.cache.maxSize
@@ -70,24 +65,24 @@ _Defaults to 1000 entries_
 ***
 ### translate(originText,toLang)    
 
-Takes a String to be translated, the from language, and the to language and calls the Google Translation API
+Takes a String to be translated, the from language, and the to language and calls the Microsoft Translator API
 Returns the results.
 
-There is no FROM language, it relies on Google to detect the origin language of the text
+There is no FROM language, it relies on Microsoft to detect the origin language of the text
      
 The TO Language can either be a String representing the language abbreviation (ex. "en" or "fr") OR
-it can be an instance of the Google API package Language Enum (`com.google.api.translate.Language`)
+it can be an instance of the Language Enum (`com.memetix.mst.language.Language`)
      
 Throws InvalidLanguageExceptions if the from or to language is invalid.
 
-Sets the Google-required HTTP_REFERRER with the `grails?.serverURL` property from Config.groovy
+Sets the HTTP_REFERRER with the `grails?.serverURL` property from Config.groovy
 
 If the user has set an API Key, method will send that, also
 
 _Parameters_
 
 * **originText** - the String to be translated
-* **toLang** - a two-character String or com.google.api.translate.Language enum instance - the Language to translate TO
+* **toLang** - a two-character String or com.memetix.mst.language.Language enum instance - the Language to translate TO
 
 _Returns_
 
@@ -107,23 +102,23 @@ _returns_
 ***
 ### translate(originText,fromLang,toLang)    
 
-Takes a String to be translated, the from language, and the to language and calls the Google Translation API
+Takes a String to be translated, the from language, and the to language and calls the Microsoft Translator API
 Returns the results.
      
 The FROM and TO Language can either be a String representing the language abbreviation (ex. "en" or "fr") OR
-it can be an instance of the Google API package Language Enum (`com.google.api.translate.Language`)
+it can be an instance of the Language Enum (`ccom.memetix.mst.language.Language`)
      
 Throws InvalidLanguageExceptions if the from or to language is invalid.
 
-Sets the Google-required HTTP_REFERRER with the `grails?.serverURL` property from Config.groovy
+Sets the HTTP_REFERRER with the `grails?.serverURL` property from Config.groovy
 
 If the user has set an API Key, method will send that, also
 
 _Parameters_
 
 * **originText** - the String to be translated
-* **fromLang** - a two-character String or com.google.api.translate.Language - the _source_ Language to translate FROM
-* **toLang** - a two-character String or com.google.api.translate.Language - the _target_ Language to translate TO
+* **fromLang** - a two-character String or com.memetix.mst.language.Language - the _source_ Language to translate FROM
+* **toLang** - a two-character String or com.memetix.mst.language.Language - the _target_ Language to translate TO
 
 _Returns_
 
@@ -133,7 +128,7 @@ Example:
 
     def originalText = "This is a string of text"
     def fromLang = "en"
-    def toLang = com.google.api.translate.Language.FRENCH
+    def toLang = com.memetix.mst.language.Language.FRENCH
     
     translateService?.translate(originalText, fromLang, toLang)
 
@@ -144,7 +139,7 @@ _returns_
 ***
 ### detect(originText)                         
     
-Takes a text string and attempts to determine the origin language. Returns the language code detected by the Google Language API
+Takes a text string and attempts to determine the origin language. Returns the language code detected by the Microsoft Translator API
 
 If the user has set an API Key, method will send that, also
      
@@ -154,7 +149,7 @@ _Parameters_
 
 _Returns_
      
-* A String representing a 2-character language code; Google's best guess at a Language.
+* A String representing a 2-character language code; Microsoft's best guess at a Language.
 
 Example:
 
@@ -173,7 +168,7 @@ This example would return `ENGLISH`._
     
 Returns the full name of the language corresponding to the language code passed in
  
-The code is a two-letter ISO Language Code supported by the Google Translation API
+The code is a two-letter ISO Language Code supported by the Microsoft Translator API
      
 _Parameters_
 
@@ -195,10 +190,10 @@ _returns_
 ***
 ### getLanguages()                         
     
-Returns a Map of all of the languages supported by the Google Translation API
+Returns a Map of all of the languages supported by the Microsoft Translator API
  
 Key = The full name of the Language
-Value = The two-character ISO Abbreviation that is required by the Google Translate API
+Value = The two-character ISO Abbreviation that is required by the Microsoft Translator  API
 
 The Value is the one that should be used on all TranslateService() method calls
 
@@ -443,6 +438,11 @@ Bug reports, Feature requests, and general inquiries welcome.
 Feel free to contact me by email (jonathan.griggs at gmail.com) or follow me on GitHub at [https://github.com/boatmeme](https://github.com/boatmeme).
 
 # Change Log
+
+## v1.1 - 2011.06.01
+
+Migrated off of Google Translation API and onto the Microsoft Translator API
+translate.microsoft.apiKey is now required to be specified in Config.groovy
 
 ## v1.0 - 2011.05.27
 
