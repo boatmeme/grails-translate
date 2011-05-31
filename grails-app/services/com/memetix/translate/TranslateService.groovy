@@ -16,10 +16,11 @@
 **/
 package com.memetix.translate;
 
-import com.memetix.mst.Language;
+import com.memetix.mst.language.Language;
 import com.memetix.mst.translate.Translate;
 import com.memetix.mst.detect.Detect;
 import com.memetix.translate.LRUCache;
+import org.springframework.beans.factory.InitializingBean 
 
 /**
  * TranslateService
@@ -31,16 +32,26 @@ import com.memetix.translate.LRUCache;
  * @since       1.0   2011.05.24                            
  */
 
-class TranslateService {
+class TranslateService implements InitializingBean {
     def grailsApplication
     static transactional = false
     def languageMap
-    def httpReferrer = grailsApplication?.config?.grails?.serverURL ?: 'http://localhost/translate'
-    def apiKey = grailsApplication?.config?.translate?.microsoft?.apiKey
-    def maxTCacheSize = grailsApplication?.config?.translate?.translation?.cache?.maxSize ?: 1000
-    def maxDCacheSize = grailsApplication?.config?.translate?.detection?.cache?.maxSize ?: 1000
-    def tCache = new LRUCache(maxTCacheSize)
-    def dCache = new LRUCache(maxDCacheSize)
+    def httpReferrer
+    def apiKey
+    def maxTCacheSize
+    def maxDCacheSize
+    def tCache
+    def dCache
+    
+    // Configure vars for Grails 1.4.0 compatibility  (ConfigHolder deprecation)
+    void afterPropertiesSet() { 
+        httpReferrer = grailsApplication?.config?.grails?.serverURL ?: 'http://localhost/translate'
+        apiKey = grailsApplication?.config?.translate?.microsoft?.apiKey
+        maxTCacheSize = grailsApplication?.config?.translate?.translation?.cache?.maxSize ?: 1000
+        maxDCacheSize = grailsApplication?.config?.translate?.detection?.cache?.maxSize ?: 1000
+        tCache = new LRUCache(maxTCacheSize)
+        dCache = new LRUCache(maxDCacheSize)
+    } 
 
     /**
      * translate(originText,fromLang,toLang)                         
