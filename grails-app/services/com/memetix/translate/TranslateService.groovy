@@ -25,10 +25,10 @@ import org.springframework.beans.factory.InitializingBean
 /**
  * TranslateService
  * 
- * Provides a service that wraps the Google Translation API. 
+ * Provides a service that wraps the Microsoft Translator API. 
  * 
  * @author Jonathan Griggs  <jonathan.griggs @ gmail.com>
- * @version     1.0   2011.05.24                              
+ * @version     1.1   2011.06.01                              
  * @since       1.0   2011.05.24                            
  */
 
@@ -56,19 +56,19 @@ class TranslateService implements InitializingBean {
     /**
      * translate(originText,fromLang,toLang)                         
      *
-     * Takes a String to be translated, the from language, and the to language and calls the Google Translation API
+     * Takes a String to be translated, the from language, and the to language and calls the Microsoft Translator API
      * Returns the results.
      * 
      * The FROM and TO Language can either be a string, the language abbreviation (ex. "en" or "fr") OR
-     * it can be an instance of the Google API package Language Enum
+     * it can be an instance of the Microsoft Translator API package Language Enum
      * 
      * Throws InvalidLanguageExceptions if the from or to language is invalid.
      * 
      * If the user has set an API Key, method will send that, also
      * 
      * @param  originText A String to be translated
-     * @param  fromLang A String representing the google abbreviation for a language (ex. "en" or "fr"), OR an instance of the Google API Language Enum            
-     * @param  toLang A String representing the google abbreviation for a language (ex. "en" or "fr"), OR an instance of the Google API Language Enum            
+     * @param  fromLang A String representing the MS abbreviation for a language (ex. "en" or "fr"), OR an instance of the Microsoft Translator API Language Enum            
+     * @param  toLang A String representing the MS abbreviation for a language (ex. "en" or "fr"), OR an instance of the Microsoft Translator API Language Enum            
      * @return The translated String
      *
      * @version     1.0   2011.05.24                              
@@ -95,7 +95,7 @@ class TranslateService implements InitializingBean {
                 toLanguage:toLang.toString())
         } else if(lTo==Language.AUTO_DETECT) {
             throw new InvalidLanguageException( 
-                message:"Cannot AUTO DETECT the language to Translate TO. Google does not yet read minds.",
+                message:"Cannot AUTO DETECT the language to Translate TO. Microsoft does not read minds.",
                 originalText: originText.toString(),
                 fromLanguage:fromLang.toString(),
                 toLanguage:toLang.toString())
@@ -115,7 +115,7 @@ class TranslateService implements InitializingBean {
         // Set the HTTP referrer to your website address.
         Translate.setHttpReferrer(httpReferrer);
         
-        // If app has set translate.google.apiKey, then by all means, use it
+        // If app has set translate.microsoft.apiKey, then by all means, use it
         if(apiKey)
             Translate.setKey(apiKey)
         //Run the translation
@@ -132,11 +132,11 @@ class TranslateService implements InitializingBean {
     /**
      * translate(originText, toLang)                         
      *
-     * Takes a String to be translated and the TO language and calls the Google Translation API
+     * Takes a String to be translated and the TO language and calls the Microsoft Translator API
      * Returns the results.
      * 
      * The TO Language can either be a string, the language abbreviation (ex. "en" or "fr") OR
-     * it can be an instance of the Google API package Language Enum
+     * it can be an instance of the Microsoft Translator API package Language Enum
      * 
      * Calls the overloaded translate() with Language.AUTO_DETECT as the FROM language
      * 
@@ -145,7 +145,7 @@ class TranslateService implements InitializingBean {
      * If the user has set an API Key, method will send that, also
      * 
      * @param  originText A String to be translated
-     * @param  toLang A String representing the google abbreviation for a language (ex. "en" or "fr"), OR an instance of the Google API Language Enum            
+     * @param  toLang A String representing the NS abbreviation for a language (ex. "en" or "fr"), OR an instance of the Microsoft Translator API Language Enum            
      * @return The translated String
      *
      * @version     1.0   2011.05.24                              
@@ -186,7 +186,7 @@ class TranslateService implements InitializingBean {
         }
         // Set the HTTP referrer to your website address.
         Detect.setHttpReferrer(httpReferrer);
-        // If app has set translate.google.apiKey, then by all means, use it
+        // If app has set translate.microsoft.apiKey, then by all means, use it
         if(apiKey)
             Detect.setKey(apiKey)
             
@@ -203,10 +203,10 @@ class TranslateService implements InitializingBean {
     /**
      * getLanguages()                         
      *
-     * Returns a Map with all Language values supported by the Google Translate API
+     * Returns a Map with all Language values supported by the Microsoft Translator API
      * 
      * Key = The full name of the Language
-     * Value = The abbreviation value that is required by the Google Translate API
+     * Value = The abbreviation value that is required by the Microsoft Translator API
      * 
      * The Value is the one that should be used on all TranslateService() method calls
      * 
@@ -234,6 +234,7 @@ class TranslateService implements InitializingBean {
      * 
      * The code is a two-letter ISO Language Code supported by the Google Translation API 
      * 
+     * @param  code A String, the language code or an instance of com.memetix.mst.language.Language enum
      * @return A String representing the full name of the language, null if no match
      *
      * @version     1.0   2011.05.26                              
@@ -242,10 +243,55 @@ class TranslateService implements InitializingBean {
     def getLanguageName(code) {
         log.debug("Executing TranslationService.getLanguageName(${code})")
         def languages = getLanguages()
+        def lCode = Language.fromString(code?.toString()?.toLowerCase())
+        if(!lCode)
+            throw new InvalidLanguageException( 
+                message:"Language Code is invalid",
+                toLanguage:code.toString())
         def name
         for(lang in languages) {
             if(lang.value.equals(code)) {
                 name = lang.key
+                break;
+            }
+        }
+        return name
+    }
+    
+    /**
+     * getLanguageName(code,locale)                         
+     *
+     * Returns the full name of the language passed in the language of the locale specified
+     * 
+     * The code is a Language Code supported by the Microsoft Translator API 
+     * The locale is a Language Code supported by the Microsoft Translator API 
+     * 
+     * @param  code A String, the language code or an instance of com.memetix.mst.language.Language enum
+     * @param  locale A String, the language code or an instance of com.memetix.mst.language.Language enum
+     * @return A String representing the full, localized name of the language, null if no match
+     *
+     * @version     1.1   2011.06.01                              
+     * @since       1.1   2011.06.01   
+     */
+    def getLanguageName(code,locale) {
+        log.debug("Executing TranslationService.getLanguageName(${code}, ${locale})")
+        def name
+        def lLocale = Language.fromString(locale?.toString()?.toLowerCase())
+        if(!lLocale)
+            throw new InvalidLanguageException( 
+                message:"Locale is invalid",
+                fromLanguage:code.toString(),
+                toLanguage:locale.toString())
+        def lCode = Language.fromString(code?.toString()?.toLowerCase())
+        if(!lCode)
+            throw new InvalidLanguageException( 
+                message:"Language Code is invalid",
+                fromLanguage:code.toString(),
+                toLanguage:locale.toString())
+            
+        for(lang in Language.values()) {
+            if(lang.equals(lCode)) {
+                name = lang.getName(lLocale);
                 break;
             }
         }

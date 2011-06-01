@@ -191,7 +191,7 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         def message = shouldFail(InvalidLanguageException) {
             translateService.translate(orig, Language.FRENCH,Language.AUTO_DETECT)
         }
-        assertEquals "Cannot AUTO DETECT the language to Translate TO. Google does not yet read minds.",message
+        assertEquals "Cannot AUTO DETECT the language to Translate TO. Microsoft does not read minds.",message
     }
     
     void testTranslateIncorrectOriginLanguage() {
@@ -200,10 +200,38 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         assertEquals "Il s'agit d'une phrase en anglais que je voudrais traduire",translation
     }
     
-    void testTranslateGetLanguageName() {
+    void testTranslateGetLanguageName_String() {
         def language = translateService.getLanguageName("en")
         assertEquals "ENGLISH",language
         language = translateService.getLanguageName("fr")
         assertEquals "FRENCH",language
+    }
+    
+    void testTranslateGetLanguageNameLocalized_String() {
+        def language = translateService.getLanguageName("en","fr")
+        assertEquals "Anglais",language
+        language = translateService.getLanguageName("fr","en")
+        assertEquals "French",language
+    }
+    
+    void testTranslateGetLanguageNameLocalized_Enum() {
+        def language = translateService.getLanguageName(Language.ENGLISH,"fr")
+        assertEquals "Anglais",language
+        language = translateService.getLanguageName(Language.FRENCH,Language.ENGLISH)
+        assertEquals "French",language
+    }
+    
+    void testTranslateGetLanguageNameLocalized_ErrorLocale() {
+        def message = shouldFail(InvalidLanguageException) {
+            def language = translateService.getLanguageName("en","fro")
+        }
+        assertEquals "Locale is invalid",message
+    }
+    
+    void testTranslateGetLanguageNameLocalized_ErrorCode() {
+        def message = shouldFail(InvalidLanguageException) {
+            def language = translateService.getLanguageName("eng","fr")
+        }
+        assertEquals "Language Code is invalid",message
     }
 }
