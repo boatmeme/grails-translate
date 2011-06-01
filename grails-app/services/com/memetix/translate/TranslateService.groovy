@@ -46,11 +46,15 @@ class TranslateService implements InitializingBean {
     // Configure vars for Grails 1.4.0 compatibility  (ConfigHolder deprecation)
     void afterPropertiesSet() { 
         httpReferrer = grailsApplication?.config?.grails?.serverURL ?: 'http://localhost/translate'
-        apiKey = grailsApplication?.config?.translate?.microsoft?.apiKey
+        apiKey = grailsApplication?.config?.translate?.microsoft?.apiKey ?: null
         maxTCacheSize = grailsApplication?.config?.translate?.translation?.cache?.maxSize ?: 1000
         maxDCacheSize = grailsApplication?.config?.translate?.detection?.cache?.maxSize ?: 1000
         tCache = new LRUCache(maxTCacheSize)
         dCache = new LRUCache(maxDCacheSize)
+        
+        Translate.setKey(apiKey)
+        Detect.setKey(apiKey)
+        Language.setKey(apiKey)
     } 
 
 
