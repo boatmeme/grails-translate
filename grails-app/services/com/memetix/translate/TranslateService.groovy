@@ -258,7 +258,6 @@ class TranslateService implements InitializingBean {
         } else {
             treeMap = new TreeMap()
             for(lang in Language?.values()) {
-                println lang.getName(lLocale)
                 treeMap.put(lang.getName(lLocale),lang.language)
             }
             languageMap.put(lLocale,treeMap)
