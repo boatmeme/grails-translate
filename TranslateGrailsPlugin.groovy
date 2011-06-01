@@ -1,6 +1,6 @@
 class TranslateGrailsPlugin {
     // the plugin version
-    def version = "1.0"
+    def version = "1.1"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.1 > *"
     // the other plugins this plugin depends on
@@ -15,7 +15,7 @@ class TranslateGrailsPlugin {
     def authorEmail = "jonathan.griggs@gmail.com"
     def title = "Translate - Language Translation for Grails"
     def description = '''\\
-Translates text from one language to another, using the Google Translate API
+Translates text from one language to another, using the Microsoft Translator API
 '''
 
     // URL to the plugin's documentation
