@@ -228,6 +228,39 @@ class TranslateService implements InitializingBean {
     }
     
     /**
+     * getLanguages(locale)                         
+     *
+     * Returns a Map with all Language values supported by the Microsoft Translator API, with 
+     * names in the language specified by locale parameter
+     * 
+     * Key = The full name of the Language, localized to requested language
+     * Value = The abbreviation value that is required by the Microsoft Translator API
+     * 
+     * The Value is the one that should be used on all TranslateService() method calls
+     * 
+     * @return A Map with key/value of Localized Language Name / Language Abbreviation. In alphabetical order, by key
+     *
+     * @version     1.1   2011.06.01                             
+     * @since       1.1   2011.06.01   
+     */
+    def getLanguages(locale) {
+        log.debug("Executing TranslationService.getLanguages()")
+        def lLocale = Language.fromString(locale?.toString()?.toLowerCase())
+        if(!lLocale)
+            throw new InvalidLanguageException( 
+                message:"Locale is invalid",
+                toLanguage:locale.toString())
+        if(!languageMap) {
+            log.debug("Initializing getLanguages() language map")
+            languageMap = new TreeMap()
+            for(lang in Language?.values()) {
+                languageMap.put(lang.getName(lLocale),lang.language)
+            }
+        }
+        return languageMap
+    }
+    
+    /**
      * getLanguageName(code)                         
      *
      * Returns the full name of the language corresponding to the language code passed in

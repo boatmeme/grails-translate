@@ -160,6 +160,11 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         }
     }
     
+    void testLocalizedLanguageList() {
+        def languages = translateService.getLanguages(Language.VIETNAMESE)
+        assertEquals 36, languages.size()
+    }
+    
     void testFromLangBad_Exception() {
         def orig = "This is an english phrase I would like translated"
         def message = shouldFail(InvalidLanguageException) {
@@ -234,4 +239,6 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         }
         assertEquals "Language Code is invalid",message
     }
+    
+    
 }
