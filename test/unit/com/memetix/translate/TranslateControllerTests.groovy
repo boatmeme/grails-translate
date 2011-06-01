@@ -115,7 +115,7 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         assertEquals 2,             jsonResponse.data.size()
         
         assertEquals "en",          jsonResponse?.data?.code         ?.toString()
-        assertEquals "ENGLISH",     jsonResponse?.data?.language     ?.toString()
+        assertEquals "English",     jsonResponse?.data?.language     ?.toString()
     }
     
     void testAjax_JSON_Detect_MissingParameter() {
@@ -208,7 +208,7 @@ class TranslateControllerTests extends ControllerUnitTestCase {
         assertEquals 1,             response.data.size()
          
         assertEquals "en",      response?.data?.language?.code     ?.toString()
-        assertEquals "ENGLISH", response?.data?.language?.name     ?.toString()
+        assertEquals "English", response?.data?.language?.name     ?.toString()
         
     }
     

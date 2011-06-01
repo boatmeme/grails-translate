@@ -35,14 +35,15 @@ class TranslateTagLib {
     
     def languageSelect = { attrs, body ->
         def select = out
+        def locale = attrs.remove('locale') ?: "en"
         def value = attrs.remove('value') ?: ""
         def excludeAuto = attrs.remove('excludeAuto') ?: false;
-        def languages = translateService.getLanguages()
+        def languages = translateService.getLanguages(locale)
         select << "<select name=\"${attrs.remove('name')?.encodeAsHTML()}\" "
         select << ">"
         def selected = ""
         for(langName in languages.keySet()) {
-            if(langName != "AUTO_DETECT" || !excludeAuto) {
+            if(languages.get(langName) != "" || !excludeAuto) {
                 selected = ""
                 if(languages.get(langName).equals(value))
                     selected = "SELECTED "
@@ -60,10 +61,14 @@ class TranslateTagLib {
     }
     
     def detectLanguage = { attrs ->
+        def locale = attrs?.locale ?: "en"
+        System.out.println ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${locale}")
         def text = attrs?.text
         def detect = translateService.detect(text)
-        def languages = translateService.getLanguages()
+        
+        def languages = translateService.getLanguages(locale)
         for(lang in languages) {
+            println lang.key
             if(lang.value.equals(detect)) {
                 detect = lang.key
                 break;
@@ -74,7 +79,8 @@ class TranslateTagLib {
     
     def getLanguageName = { attrs ->
         def code = attrs?.code
-        def name = translateService.getLanguageName(code)
+        def locale = attrs.remove('locale') ?: "en"
+        def name = translateService.getLanguageName(code,locale)
         out << name
     }
 }

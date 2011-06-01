@@ -155,9 +155,6 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         def languages = translateService.getLanguages()
         assertEquals 36, languages.size()
         def i = 0
-        for(lang in Language.values()) {
-            assertEquals lang.toString(), languages.get(lang.name())
-        }
     }
     
     void testLocalizedLanguageList() {
@@ -207,9 +204,9 @@ class TranslateServiceTests extends GrailsUnitTestCase {
     
     void testTranslateGetLanguageName_String() {
         def language = translateService.getLanguageName("en")
-        assertEquals "ENGLISH",language
+        assertEquals "English",language
         language = translateService.getLanguageName("fr")
-        assertEquals "FRENCH",language
+        assertEquals "French",language
     }
     
     void testTranslateGetLanguageNameLocalized_String() {
