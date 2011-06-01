@@ -443,6 +443,8 @@ Feel free to contact me by email (jonathan.griggs at gmail.com) or follow me on 
 
 * Migrated off of Google Translation API and onto the Microsoft Translator API
 * translate.microsoft.apiKey is now required to be specified in Config.groovy
+* Implemented Language Name Localization - Get the language names constants _in_ the language of your choosing
+* Small bug fixes and error checking
 
 ## v1.0 - 2011.05.27
 
