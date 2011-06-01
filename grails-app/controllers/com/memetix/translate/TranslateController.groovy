@@ -58,7 +58,7 @@ class TranslateController {
         } catch(Exception e) {
             detected = "UNKNOWN"
             log.error e
-            flash.error "Language Detection Error: ${e.message}"
+            flash.error = "Language Detection Error: ${e.message}"
         }
         render(view:'index',model:[language:detected])
     }

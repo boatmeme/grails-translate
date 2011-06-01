@@ -23,7 +23,7 @@ import org.apache.log4j.*
 class TranslateServiceTests extends GrailsUnitTestCase {
      def translateService
      def log
-    
+
     protected void setUp() {
         super.setUp()
         setupLogger()

@@ -53,6 +53,7 @@ class TranslateService implements InitializingBean {
         dCache = new LRUCache(maxDCacheSize)
     } 
 
+
     /**
      * translate(originText,fromLang,toLang)                         
      *
@@ -113,14 +114,18 @@ class TranslateService implements InitializingBean {
         }
         
         // Set the HTTP referrer to your website address.
-        Translate.setHttpReferrer(httpReferrer);
+        //Translate.setHttpReferrer(httpReferrer);
         
         // If app has set translate.microsoft.apiKey, then by all means, use it
         if(apiKey)
             Translate.setKey(apiKey)
         //Run the translation
-        translatedText = Translate.execute(originText,lFrom,lTo);
-        
+        try {
+            translatedText = Translate.execute(originText,lFrom,lTo);
+        } catch (Exception e) {
+            println "${originText}, ${lFrom}, ${lTo}"
+            log.error e
+        }
         // If the cache has been configured, put into it
         if(maxTCacheSize>=0&&translatedText) {
             log.debug("Caching Translation")
