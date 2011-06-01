@@ -181,7 +181,7 @@ class TranslateService implements InitializingBean {
             //if it is in the cache, then send it on back
             if(detectedLanguage) {
                 log.debug("Returning Cached LanguageDetect")
-                return detectedLanguage.language?.toString()
+                return detectedLanguage.toString()
             }
         }
         // Set the HTTP referrer to your website address.
@@ -205,26 +205,21 @@ class TranslateService implements InitializingBean {
      *
      * Returns a Map with all Language values supported by the Microsoft Translator API
      * 
+     * DEPRECATED - use getLanguages(locale). This method just defaults to ENGLISH now
+     * 
      * Key = The full name of the Language
      * Value = The abbreviation value that is required by the Microsoft Translator API
      * 
      * The Value is the one that should be used on all TranslateService() method calls
      * 
      * @return A Map with key/value of Language Name / Language Abbreviation. In alphabetical order, by key
-     *
+     * @deprecated use getLanguages(locale)
      * @version     1.0   2011.05.24                              
      * @since       1.0   2011.05.24   
      */
+    @Deprecated
     def getLanguages() {
-        log.debug("Executing TranslationService.getLanguages()")
-        if(!languageMap) {
-            log.debug("Initializing getLanguages() language map")
-            languageMap = new TreeMap()
-            for(lang in Language?.values()) {
-                languageMap.put(lang.name(),lang.language)
-            }
-        }
-        return languageMap
+        return getLanguages(Language.ENGLISH)
     }
     
     /**
@@ -244,20 +239,31 @@ class TranslateService implements InitializingBean {
      * @since       1.1   2011.06.01   
      */
     def getLanguages(locale) {
-        log.debug("Executing TranslationService.getLanguages()")
+        log.debug("Executing TranslationService.getLanguages(${locale})")
+        
         def lLocale = Language.fromString(locale?.toString()?.toLowerCase())
         if(!lLocale)
             throw new InvalidLanguageException( 
                 message:"Locale is invalid",
                 toLanguage:locale.toString())
+        
+        def treeMap
         if(!languageMap) {
-            log.debug("Initializing getLanguages() language map")
-            languageMap = new TreeMap()
+            log.debug("Initializing getLanguages(${locale}) language map")
+            languageMap = new HashMap<Language,Map>()   
+        } 
+        
+        if (languageMap.containsKey(lLocale)) {
+            treeMap = languageMap.get(lLocale)  
+        } else {
+            treeMap = new TreeMap()
             for(lang in Language?.values()) {
-                languageMap.put(lang.getName(lLocale),lang.language)
+                println lang.getName(lLocale)
+                treeMap.put(lang.getName(lLocale),lang.language)
             }
+            languageMap.put(lLocale,treeMap)
         }
-        return languageMap
+        return treeMap
     }
     
     /**
