@@ -4,7 +4,7 @@
 
 The Translate plugin provides a Grails Service, TagLib, and Controller to enable translation of text within your Grails application.
 
-This plugin wraps the [Microsoft Translator API](http://www.microsofttranslator.com/dev/) with the help of a [Java Client](https://github.com/boatmeme/microsoft-translation-java-api) written specifically to support this plugin after the deprecation of the Google Translate API.
+This plugin wraps the [Microsoft Translator API](http://www.microsofttranslator.com/dev/) with the help of a  of [microsoft-translator-java-api](https://github.com/boatmeme/microsoft-translation-java-api), a compact, fast Java library that wraps the Microsoft Translator AJAX Services written specifically to support this plugin.
 
 The TranslateService is backed by a configurable Least-Recently-Used (LRU) Cache to reduce the API calls made, particularly for oft-repeated translations (if you're dynamically translating i18n messages to foreign languages, for instance).
 
