@@ -19,6 +19,7 @@ package com.memetix.translate;
 import com.memetix.mst.language.Language;
 import com.memetix.mst.translate.Translate;
 import com.memetix.mst.detect.Detect;
+import com.memetix.mst.sentence.BreakSentences;
 import com.memetix.translate.LRUCache;
 import org.springframework.beans.factory.InitializingBean 
 
@@ -170,7 +171,7 @@ class TranslateService implements InitializingBean {
      * If the user has set an API Key, method will send that, also
      * 
      * @param  originText A String used to detect the language
-     * @return A String; Google's best guess at a Language
+     * @return A String; Microsoft's best guess at a Language
      *
      * @version     1.0   2011.05.24                              
      * @since       1.0   2011.05.24   
@@ -339,6 +340,36 @@ class TranslateService implements InitializingBean {
             }
         }
         return name
+    }
+    
+    
+    /**
+     * breakSentences(text, fromLang)                         
+     *
+     * Returns an array of Integers, representing the sentence-break interpretation that Microsoft Translator API 
+     * has applied to the provided text.
+     * 
+     * The fromLanguage is a Language Code supported by the Microsoft Translator API and is required. 
+     * AUTO_DETECT is not supported by this service
+     * 
+     * @param  text A String that you would like broken into sentences
+     * @param  fromLang A String, the language code or an instance of com.memetix.mst.language.Language enum
+     * @return An array of Integers representing the number (array size) and length (array member value) of sentences in the text
+     *
+     * @version     1.1.1   2011.06.15                              
+     * @since       1.1.1   2011.06.15   
+     */
+    def breakSentences(text,fromLang) {
+        log.debug("Executing TranslationService.breakSentences(${text}, ${fromLang})")
+        
+        def fromLanguage = Language.fromString(fromLang?.toString()?.toLowerCase())
+        if(!fromLanguage||fromLanguage.equals(Language.AUTO_DETECT))
+            throw new InvalidLanguageException( 
+                message:"From Language is invalid",
+                fromLanguage:fromLanguage.toString(),
+                toLanguage:"")
+            
+        return BreakSentences.execute(text, fromLanguage);
     }
     
 }

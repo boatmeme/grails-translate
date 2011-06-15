@@ -439,6 +439,11 @@ Feel free to contact me by email (jonathan.griggs at gmail.com) or follow me on 
 
 # Change Log
 
+## v1.1.1 - CURRENT
+
+* Upgraded to use 0.4-SNAPSHOT version of Microsoft Translator Java API
+* Implemented BreakSentences service
+
 ## v1.1 - 2011.06.01
 
 * Migrated off of Google Translation API and onto the Microsoft Translator API

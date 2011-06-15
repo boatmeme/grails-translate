@@ -237,5 +237,20 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         assertEquals "Language Code is invalid",message
     }
     
+    void testBreakSentences() {
+        def intArr = translateService.breakSentences("This is my sentence. That is your sentence. We all have our sentences.", "en")
+        assertEquals 3,intArr.length
+        assertEquals 21, intArr[0]
+        assertEquals 23, intArr[1]
+        assertEquals 26, intArr[2]
+    }
+    
+    void testBreakSentences_AUTO_DETECT_ErrorCode() {
+        def message = shouldFail(InvalidLanguageException) {
+            def intArr = translateService.breakSentences("This is my sentence. That is your sentence. We all have our sentences.", Language.AUTO_DETECT)
+        }
+        assertEquals "From Language is invalid", message
+    }
+    
     
 }
