@@ -19,6 +19,7 @@ grails.project.dependency.resolution = {
         //mavenLocal()
         mavenCentral()
         mavenRepo "https://oss.sonatype.org/content/repositories/releases/"
+        mavenRepo "https://oss.sonatype.org/content/repositories/snapshots/"
         //mavenRepo "http://snapshots.repository.codehaus.org"
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
@@ -26,7 +27,7 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-        compile 'com.memetix:microsoft-translator-java-api:0.3'
+        compile 'com.memetix:microsoft-translator-java-api:0.4-SNAPSHOT'
         // runtime 'mysql:mysql-connector-java:5.1.13'
     }
 }
