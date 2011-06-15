@@ -29,7 +29,7 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         setupLogger()
         translateService = new TranslateService()
         def config = new ConfigSlurper().parse(new File( 'grails-app/conf/Config.groovy' ).text) 
-        translateService.apiKey = config.translate.test.microsoft.apiKey
+        translateService.apiKey = System.properties['test.api.key'] ?: config.translate.test.microsoft.apiKey
     }
     
     protected void tearDown() {

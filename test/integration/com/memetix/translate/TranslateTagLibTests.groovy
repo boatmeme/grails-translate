@@ -25,7 +25,7 @@ class TranslateTagLibTests extends GroovyPagesTestCase  {
     protected void setUp() {
         super.setUp()
         translateService = new TranslateService()
-        translateService.apiKey = grailsApplication.config.translate.test.microsoft.apiKey 
+        translateService.apiKey = System.properties['test.api.key'] ?: grailsApplication.config.translate.test.microsoft.apiKey 
     }
 
     protected void tearDown() {
