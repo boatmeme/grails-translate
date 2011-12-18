@@ -1,0 +1,32 @@
+<plugin name='translate' version='1.2' grailsVersion='1.1 &gt; *'>
+  <author>Jonathan Griggs</author>
+  <authorEmail>jonathan.griggs@gmail.com</authorEmail>
+  <title>Translate - Language Translation for Grails</title>
+  <description>\
+Translates text from one language to another, using the Microsoft Translator API
+</description>
+  <documentation>http://grails.org/plugin/translate</documentation>
+  <type>TranslateGrailsPlugin</type>
+  <resources>
+    <resource>com.memetix.translate.TranslateController</resource>
+    <resource>com.memetix.translate.TranslateService</resource>
+    <resource>com.memetix.translate.TranslateTagLib</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://plugins.grails.org' />
+    <repository name='http://repo.grails.org/grails/plugins' url='http://repo.grails.org/grails/plugins/' />
+    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
+    <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+    <repository name='https://oss.sonatype.org/content/repositories/releases/' url='https://oss.sonatype.org/content/repositories/releases/' />
+    <repository name='https://oss.sonatype.org/content/repositories/snapshots/' url='https://oss.sonatype.org/content/repositories/snapshots/' />
+  </repositories>
+  <dependencies>
+    <compile>
+      <dependency group='com.memetix' name='microsoft-translator-java-api' version='0.5-SNAPSHOT' />
+    </compile>
+  </dependencies>
+  <plugins />
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>
