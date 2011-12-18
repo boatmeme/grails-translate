@@ -27,7 +27,7 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-        compile 'com.memetix:microsoft-translator-java-api:0.4-SNAPSHOT'
+        compile 'com.memetix:microsoft-translator-java-api:0.5-SNAPSHOT'
         // runtime 'mysql:mysql-connector-java:5.1.13'
     }
 }

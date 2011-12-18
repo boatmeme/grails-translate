@@ -49,7 +49,7 @@ class TranslateServiceTests extends GrailsUnitTestCase {
     def frenchPhrase = "Il s'agit d'une expression anglais je traduite"
     def englishPhrase = "This is an english phrase I would like translated"
     
-    def frTransEnglish = "It is an English expression I translated"
+    def frTransEnglish = "This is an English expression I translated"
 
     void testTranslateEnglishToFrench_Specific_Enum() {
         def translation = translateService.translate(englishPhrase, Language.ENGLISH, Language.FRENCH)

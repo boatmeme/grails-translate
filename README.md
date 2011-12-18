@@ -439,7 +439,11 @@ Feel free to contact me by email (jonathan.griggs at gmail.com) or follow me on 
 
 # Change Log
 
-## v1.1.1 - CURRENT
+## v1.1.2 - 2011.12.17
+
+* Updated to use 0.5-SNAPSHOT version of Microsoft Translator Java API
+
+## v1.1.1 - 2011.06.15
 
 * Upgraded to use 0.4-SNAPSHOT version of Microsoft Translator Java API
 * Implemented BreakSentences service
