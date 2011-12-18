@@ -246,7 +246,8 @@ class TranslateService implements InitializingBean {
      */
     def getLanguages(locale) {
         log.debug("Executing TranslationService.getLanguages(${locale})")
-        
+        if(apiKey)
+            Language.setKey(apiKey)
         def lLocale = Language.fromString(locale?.toString()?.toLowerCase())
         if(!lLocale)
             throw new InvalidLanguageException( 
@@ -285,6 +286,8 @@ class TranslateService implements InitializingBean {
      * @since       1.0   2011.05.26   
      */
     def getLanguageName(code) {
+        if(apiKey)
+            Language.setKey(apiKey)
         log.debug("Executing TranslationService.getLanguageName(${code})")
         def languages = getLanguages()
         def lCode = Language.fromString(code?.toString()?.toLowerCase())
@@ -318,6 +321,8 @@ class TranslateService implements InitializingBean {
      * @since       1.1   2011.06.01   
      */
     def getLanguageName(code,locale) {
+        if(apiKey)
+            Language.setKey(apiKey)
         log.debug("Executing TranslationService.getLanguageName(${code}, ${locale})")
         def name
         def lLocale = Language.fromString(locale?.toString()?.toLowerCase())
