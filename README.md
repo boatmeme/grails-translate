@@ -439,6 +439,11 @@ Feel free to contact me by email (jonathan.griggs at gmail.com) or follow me on 
 
 # Change Log
 
+## v1.2 - 2011.12.17
+
+* Upgraded to Grails 2.0
+* Fixed bug where Language.setKey() was not being called prior to first call
+
 ## v1.1.2 - 2011.12.17
 
 * Updated to use 0.5-SNAPSHOT version of Microsoft Translator Java API
