@@ -153,13 +153,13 @@ class TranslateServiceTests extends GrailsUnitTestCase {
     
     void testLanguageList() {
         def languages = translateService.getLanguages()
-        assertEquals 36, languages.size()
+        assertEquals 38, languages.size()
         def i = 0
     }
     
     void testLocalizedLanguageList() {
         def languages = translateService.getLanguages(Language.VIETNAMESE)
-        assertEquals 36, languages.size()
+        assertEquals 38, languages.size()
     }
     
     void testFromLangBad_Exception() {
