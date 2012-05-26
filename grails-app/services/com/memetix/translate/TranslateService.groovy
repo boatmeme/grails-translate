@@ -39,6 +39,8 @@ class TranslateService implements InitializingBean {
     def languageMap
     def httpReferrer
     def apiKey
+    def clientId
+    def clientSecret
     def maxTCacheSize
     def maxDCacheSize
     def tCache
@@ -47,12 +49,30 @@ class TranslateService implements InitializingBean {
     // Configure vars for Grails 1.4.0 compatibility  (ConfigHolder deprecation)
     void afterPropertiesSet() { 
         httpReferrer = grailsApplication?.config?.grails?.serverURL ?: 'http://localhost/translate'
+        
+        //ONLY set apiKey if you are using an OLD Bing App ID
         apiKey = grailsApplication?.config?.translate?.microsoft?.apiKey
+        
+        // New Users should set client id and client secret from Windows Azure Marketplace as detailed at: http://msdn.microsoft.com/en-us/library/hh454950.aspx
+        clientId = grailsApplication?.config?.translate?.microsoft?.clientId
+        clientSecret = grailsApplication?.config?.translate?.microsoft?.clientSecret
+        
         maxTCacheSize = grailsApplication?.config?.translate?.translation?.cache?.maxSize ?: 1000
         maxDCacheSize = grailsApplication?.config?.translate?.detection?.cache?.maxSize ?: 1000
         tCache = new LRUCache(maxTCacheSize)
         dCache = new LRUCache(maxDCacheSize)
+        initKeys()
     } 
+    
+    def initKeys() {
+        // If app has set translate.microsoft.apiKey, then by all means, use it
+        if(apiKey)
+            Translate.setKey(apiKey)
+        else if(clientId&&clientSecret) {
+            Translate.setClientId(clientId)
+            Translate.setClientSecret(clientSecret)
+        }
+    }
 
 
     /**
@@ -117,9 +137,6 @@ class TranslateService implements InitializingBean {
         // Set the HTTP referrer to your website address.
         //Translate.setHttpReferrer(httpReferrer);
         
-        // If app has set translate.microsoft.apiKey, then by all means, use it
-        if(apiKey)
-            Translate.setKey(apiKey)
         //Run the translation
         try {
             translatedText = Translate.execute(originText,lFrom,lTo);
@@ -192,9 +209,6 @@ class TranslateService implements InitializingBean {
         }
         // Set the HTTP referrer to your website address.
         Detect.setHttpReferrer(httpReferrer);
-        // If app has set translate.microsoft.apiKey, then by all means, use it
-        if(apiKey)
-            Detect.setKey(apiKey)
             
         detectedLanguage = Detect.execute(originText)
         
@@ -246,8 +260,7 @@ class TranslateService implements InitializingBean {
      */
     def getLanguages(locale) {
         log.debug("Executing TranslationService.getLanguages(${locale})")
-        if(apiKey)
-            Language.setKey(apiKey)
+        
         def lLocale = Language.fromString(locale?.toString()?.toLowerCase())
         if(!lLocale)
             throw new InvalidLanguageException( 
@@ -286,8 +299,6 @@ class TranslateService implements InitializingBean {
      * @since       1.0   2011.05.26   
      */
     def getLanguageName(code) {
-        if(apiKey)
-            Language.setKey(apiKey)
         log.debug("Executing TranslationService.getLanguageName(${code})")
         def languages = getLanguages()
         def lCode = Language.fromString(code?.toString()?.toLowerCase())
@@ -321,8 +332,6 @@ class TranslateService implements InitializingBean {
      * @since       1.1   2011.06.01   
      */
     def getLanguageName(code,locale) {
-        if(apiKey)
-            Language.setKey(apiKey)
         log.debug("Executing TranslationService.getLanguageName(${code}, ${locale})")
         def name
         def lLocale = Language.fromString(locale?.toString()?.toLowerCase())

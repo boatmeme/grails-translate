@@ -24,5 +24,7 @@ log4j = {
 }
 
 translate.test.microsoft.apiKey = ""
+translate.test.microsoft.clientId=""
+translate.test.microsoft.clientSecret=""
 grails.views.default.codec="none" // none, html, base64
 grails.views.gsp.encoding="UTF-8"

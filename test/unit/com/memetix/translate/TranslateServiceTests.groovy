@@ -30,6 +30,9 @@ class TranslateServiceTests extends GrailsUnitTestCase {
         translateService = new TranslateService()
         def config = new ConfigSlurper().parse(new File( 'grails-app/conf/Config.groovy' ).text) 
         translateService.apiKey = System.properties['test.api.key'] ?: config.translate.test.microsoft.apiKey
+        translateService.clientId = System.properties['test.api.clientId'] ?: config.translate.test.microsoft.clientId
+        translateService.clientSecret = System.properties['test.api.clientSecret'] ?: config.translate.test.microsoft.clientSecret
+        translateService.initKeys()
     }
     
     protected void tearDown() {
@@ -49,7 +52,7 @@ class TranslateServiceTests extends GrailsUnitTestCase {
     def frenchPhrase = "Il s'agit d'une expression anglais je traduite"
     def englishPhrase = "This is an english phrase I would like translated"
     
-    def frTransEnglish = "This is an English expression I translated"
+    def frTransEnglish = "It is an English expression I translated"
 
     void testTranslateEnglishToFrench_Specific_Enum() {
         def translation = translateService.translate(englishPhrase, Language.ENGLISH, Language.FRENCH)
@@ -153,13 +156,13 @@ class TranslateServiceTests extends GrailsUnitTestCase {
     
     void testLanguageList() {
         def languages = translateService.getLanguages()
-        assertEquals 38, languages.size()
+        assertEquals 39, languages.size()
         def i = 0
     }
     
     void testLocalizedLanguageList() {
         def languages = translateService.getLanguages(Language.VIETNAMESE)
-        assertEquals 38, languages.size()
+        assertEquals 39, languages.size()
     }
     
     void testFromLangBad_Exception() {
