@@ -27,16 +27,23 @@ After you have installed the Translate plugin in your application, I'd recommend
 The TranslatePlugin may be configured with several parameters, all specified in your application's */grails-app/conf/Config.groovy*
 
 
-    translate.microsoft.apiKey			= 'MY_API_KEY'	// Microsoft Translator API Key (REQUIRED)
-    translate.translation.cache.maxSize		= 1000		// Maximum size of the LRU Cache for Translations
-    translate.detection.cache.maxSize		= 1000 		// Maximum size of the LRU Cache for Language Detection
+    translate.microsoft.clientId		= 'MY_CLIENT_ID'	// Windows Azure Marketplace Client ID (REQUIRED)
+    translate.microsoft.clientSecret		= 'MY_CLIENT_SECRET'	// Windows Azure Marketplace Client Secret (REQUIRED)
+    translate.translation.cache.maxSize		= 1000			// Maximum size of the LRU Cache for Translations
+    translate.detection.cache.maxSize		= 1000 			// Maximum size of the LRU Cache for Language Detection
 
 ***
-### translate.microsoft.apiKey
+### translate.microsoft.clientId
 
 _**REQUIRED**_
 
-This is your Bing AppID / API Key that you received by registering your application at the [Bing Developer Center](http://www.bing.com/developers/createapp.aspx). It is required to use this plugin.
+This is your Windows Azure Marketplace Client ID that you received by registering your application as described [here](http://msdn.microsoft.com/en-us/library/hh454950.aspx). It is required to use this plugin.
+
+***
+### translate.microsoft.clientSecret
+_**REQUIRED**_
+
+This is your Windows Azure Marketplace Client Secret that you received by registering your application as described [here](http://msdn.microsoft.com/en-us/library/hh454960.aspx). It is required to use this plugin.
 
 ***
 ### translate.translation.cache.maxSize
@@ -438,6 +445,10 @@ Bug reports, Feature requests, and general inquiries welcome.
 Feel free to contact me by email (jonathan.griggs at gmail.com) or follow me on GitHub at [https://github.com/boatmeme](https://github.com/boatmeme).
 
 # Change Log
+
+## v1.3.0 - 2012.05.25
+
+* Upgraded to 0.6.1 RELEASE of Microsoft Translator Java API from Maven Central Repo. Allows the use of new Windows Azure Marketplace Client ID / Client Secret Oauth
 
 ## v1.2.1 - 2012.01.05
 
